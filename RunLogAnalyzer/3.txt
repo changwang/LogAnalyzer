@@ -1,0 +1,23 @@
+threadId:1 write_var:a oldVarValue:1 newVarValue:2
+threadId:1 write_var:a oldVarValue:8 newVarValue:9
+threadId:1 write_var:a oldVarValue:9 newVarValue:10
+threadId:1 write_var:a oldVarValue:16 newVarValue:17
+threadId:1 write_var:a oldVarValue:18 newVarValue:19
+
+threadId:2 write_var:a oldVarValue:2 newVarValue:3
+threadId:2 write_var:a oldVarValue:7 newVarValue:8
+threadId:2 write_var:a oldVarValue:10 newVarValue:11
+threadId:2 write_var:a oldVarValue:15 newVarValue:16
+threadId:2 write_var:a oldVarValue:19 newVarValue:20
+
+threadId:3 write_var:a oldVarValue:3 newVarValue:4
+threadId:3 write_var:a oldVarValue:6 newVarValue:7
+threadId:3 write_var:a oldVarValue:11 newVarValue:12
+threadId:3 write_var:a oldVarValue:14 newVarValue:15
+threadId:3 write_var:a oldVarValue:20 newVarValue:21
+
+threadId:4 write_var:a oldVarValue:4 newVarValue:5
+threadId:4 write_var:a oldVarValue:5 newVarValue:6
+threadId:4 write_var:a oldVarValue:12 newVarValue:13
+threadId:4 write_var:a oldVarValue:13 newVarValue:14
+threadId:4 write_var:a oldVarValue:21 newVarValue:22

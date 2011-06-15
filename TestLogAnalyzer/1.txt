@@ -1,0 +1,6 @@
+threadId:1 read_var:a oldVarValue:1 newVarValue:1
+threadId:1 read_var:a oldVarValue:2 newVarValue:2
+threadId:1 read_var:a oldVarValue:2 newVarValue:2
+threadId:2 write_var:a oldVarValue:1 newVarValue:2
+threadId:2 write_var:a oldVarValue:2 newVarValue:3
+threadId:3 write_var:a oldVarValue:3 newVarValue:2

@@ -1,0 +1,86 @@
+#include "LogEntry.h"
+#include "Helper.h"
+
+LogEntry::LogEntry(unsigned tid)
+{
+    // if tid is 0, which means it has not been initialized yet.
+    _threadID = tid;
+    _op = OperationUndefined;
+    _address = "";
+    _oldValue = "";
+    _newValue = "";
+    // use total order number to distinguish different log entries,
+    // which may have same values.
+    _totalOrderNum = 0;
+
+    _ctx = NULL;
+    _symVariable = NULL;
+    _symValue = 0;  // this means it has not been solved.
+}
+
+/*
+  create Z3 variable.
+  the symbol variable has following format:
+  LA_tid_totalOrderNum
+ */
+void LogEntry::DeclareSymbolVarible(Z3_context ctx)
+{
+    _ctx = ctx;
+    string symStr = kLAZ3VarPrefix;
+    symStr.append(IntToString(_threadID) + "_" + IntToString(_totalOrderNum));
+    Z3_symbol s = Z3_mk_string_symbol(_ctx, symStr.c_str());
+    _symVariable = Z3_mk_const(_ctx, s, Z3_mk_int_sort(_ctx));
+
+#if kLAShowLog
+    cout << Z3_ast_to_string(_ctx, _symVariable) << endl;
+#endif
+    // make sure the symbol variable value is greater than 0
+    Z3_assert_cnstr(_ctx, 
+        Z3_mk_gt(_ctx, _symVariable, 
+        Z3_mk_int(_ctx, 0, Z3_mk_int_sort(_ctx))));
+}
+
+/*
+  each time when one Z3Context is passed in,
+  should call DeclareSymbolVariable again, 
+  because the context has changed.
+ */
+Z3_ast LogEntry::GetSymbolVarible(Z3_context ctx)
+{
+    if (ctx != NULL)
+    {
+        DeclareSymbolVarible(ctx);
+    }
+    return _symVariable;
+}
+
+/*
+  compares whether two entries are the same,
+  according to their total order numbers.
+ */
+const bool LogEntry::operator ==(const LogEntry &other) const
+{
+    return _totalOrderNum == other.GetTotalOrderNum();
+}
+
+/*
+  compares two entries, used by sort() in algorithms.
+ */
+const bool LogEntry::operator <(const LogEntry &other) const
+{
+    return _symValue < other.GetSybmolValue();
+}
+
+/*
+  displays log entry with a readable style.
+ */
+string LogEntry::ToString() const
+{
+    string strEntry("Thread " + IntToString(GetThreadId()));
+    strEntry.append(": " + OpTypeToString(GetOpType()));
+    strEntry.append(":" + GetAddress());
+    strEntry.append(" oldValue:" + GetOldValue());
+    strEntry.append(" newValue:" + GetNewValue());
+    strEntry.append(" Order:" + IntToString(GetTotalOrderNum()));
+    return strEntry;
+}

@@ -1,0 +1,218 @@
+threadId:7 write_var:27744459_LElevator;.events)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:9023134_LControls;.floors)[LFloor; oldVarValue:null newVarValue:[LFloor;@60aeb0
+threadId:7 write_var:23899971_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:23899971_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:8918002_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:8918002_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:30771886_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:30771886_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:8637543_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:8637543_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:14718739_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:14718739_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:14577460_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:14577460_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:22474382_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:22474382_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:4699264_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:4699264_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:null newVarValue:[]
+threadId:7 write_var:27744459_LElevator;.controls)LControls; oldVarValue:null newVarValue:Controls@89ae9e
+threadId:7 read_var:_LLift;.count)I oldVarValue:0 newVarValue:0
+threadId:7 write_var:_LLift;.count)I oldVarValue:0 newVarValue:0
+threadId:7 write_var:1102920_LLift;.controls)LControls; oldVarValue:null newVarValue:Controls@89ae9e
+threadId:7 write_var:1102920_LLift;.pickupOn)[I oldVarValue:null newVarValue:[I@e0e1c6
+threadId:7 write_var:1102920_LLift;.peopleFor)[I oldVarValue:null newVarValue:[I@6ca1c
+threadId:7 read_var:_LLift;.count)I oldVarValue:1 newVarValue:1
+threadId:7 write_var:_LLift;.count)I oldVarValue:1 newVarValue:1
+threadId:7 write_var:14410104_LLift;.controls)LControls; oldVarValue:null newVarValue:Controls@89ae9e
+threadId:7 write_var:14410104_LLift;.pickupOn)[I oldVarValue:null newVarValue:[I@1af9e22
+threadId:7 write_var:14410104_LLift;.peopleFor)[I oldVarValue:null newVarValue:[I@b6ece5
+threadId:7 read_var:28737396_LButtonPress;.time)I oldVarValue:5 newVarValue:5
+threadId:9 read_var:1102920_LLift;.travelDir)I oldVarValue:0 newVarValue:0
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 read_var:1102920_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:9 acquire_lock:6718604
+threadId:9 read_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:6718604
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 read_var:1102920_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:9 acquire_lock:6718604
+threadId:9 read_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:6718604
+threadId:9 read_var:1102920_LLift;.firstFloor)I oldVarValue:1 newVarValue:1
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:6718604
+threadId:9 read_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:6718604
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:6718604
+threadId:9 read_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:6718604
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:8918002
+threadId:9 read_var:8918002_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:8918002
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:8918002
+threadId:9 read_var:8918002_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:8918002
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:30771886
+threadId:9 read_var:30771886_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:30771886
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:30771886
+threadId:9 read_var:30771886_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:30771886
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:8637543
+threadId:9 read_var:8637543_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:8637543
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:8637543
+threadId:9 read_var:8637543_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:8637543
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:14718739
+threadId:9 read_var:14718739_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:14718739
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:14718739
+threadId:9 read_var:14718739_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:14718739
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:14577460
+threadId:9 read_var:14577460_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:14577460
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:14577460
+threadId:9 read_var:14577460_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:14577460
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:22474382
+threadId:9 read_var:22474382_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:22474382
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:22474382
+threadId:9 read_var:22474382_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:22474382
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:4699264
+threadId:9 read_var:4699264_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:4699264
+threadId:9 read_var:1102920_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:9 acquire_lock:4699264
+threadId:9 read_var:4699264_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:9 release_lock:4699264
+threadId:9 read_var:1102920_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:9 read_var:1102920_LLift;.travelDir)I oldVarValue:0 newVarValue:0
+threadId:10 read_var:14410104_LLift;.travelDir)I oldVarValue:0 newVarValue:0
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 read_var:14410104_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 read_var:14410104_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.firstFloor)I oldVarValue:1 newVarValue:1
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:8918002
+threadId:10 read_var:8918002_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:8918002
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:8918002
+threadId:10 read_var:8918002_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:8918002
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:30771886
+threadId:10 read_var:30771886_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:30771886
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:30771886
+threadId:10 read_var:30771886_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:30771886
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:8637543
+threadId:10 read_var:8637543_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:8637543
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:8637543
+threadId:10 read_var:8637543_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:8637543
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:14718739
+threadId:10 read_var:14718739_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:14718739
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:14718739
+threadId:10 read_var:14718739_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:14718739
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:14577460
+threadId:10 read_var:14577460_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:14577460
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:14577460
+threadId:10 read_var:14577460_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:14577460
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:22474382
+threadId:10 read_var:22474382_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:22474382
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:22474382
+threadId:10 read_var:22474382_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:22474382
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:4699264
+threadId:10 read_var:4699264_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:4699264
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:4699264
+threadId:10 read_var:4699264_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:4699264
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.travelDir)I oldVarValue:0 newVarValue:0
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 read_var:14410104_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.upPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 read_var:14410104_LLift;.currentFloor)I oldVarValue:1 newVarValue:1
+threadId:10 acquire_lock:6718604
+threadId:10 read_var:6718604_LFloor;.downPeople)Ljava/util/Vector<>; oldVarValue:[] newVarValue:[]
+threadId:10 release_lock:6718604
+threadId:10 read_var:14410104_LLift;.firstFloor)I oldVarValue:1 newVarValue:1
+threadId:10 read_var:14410104_LLift;.lastFloor)I oldVarValue:8 newVarValue:8
+threadId:10 read_var:14410104_LLift;.controls)LControls; oldVarValue:Controls@89ae9e newVarValue:Controls@89ae9e
+threadId:10 acquire_lock:6718604

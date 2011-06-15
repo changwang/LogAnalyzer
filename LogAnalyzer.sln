@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.vcxproj", "{18131ED8-96F6-468C-806A-680BBE695E91}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestLogAnalyzer", "TestLogAnalyzer\TestLogAnalyzer.vcxproj", "{16A174D7-74A8-426A-8D27-73C439B961AD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18131ED8-96F6-468C-806A-680BBE695E91} = {18131ED8-96F6-468C-806A-680BBE695E91}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RunLogAnalyzer", "RunLogAnalyzer\RunLogAnalyzer.vcxproj", "{22376FD6-88CA-486C-828B-2C19BD882218}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18131ED8-96F6-468C-806A-680BBE695E91} = {18131ED8-96F6-468C-806A-680BBE695E91}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GUILogAnalyzer", "GUILogAnalyzer\GUILogAnalyzer.vcxproj", "{2F01DA45-0A3C-48BE-B5DD-FA42165E2AF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18131ED8-96F6-468C-806A-680BBE695E91} = {18131ED8-96F6-468C-806A-680BBE695E91}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtLogAnalzyer", "QtLogAnalzyer\QtLogAnalzyer.vcxproj", "{B65D3699-EF0D-4340-9002-3A7371E233C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18131ED8-96F6-468C-806A-680BBE695E91}.Debug|Win32.ActiveCfg = Debug|Win32
+		{18131ED8-96F6-468C-806A-680BBE695E91}.Debug|Win32.Build.0 = Debug|Win32
+		{18131ED8-96F6-468C-806A-680BBE695E91}.Release|Win32.ActiveCfg = Release|Win32
+		{18131ED8-96F6-468C-806A-680BBE695E91}.Release|Win32.Build.0 = Release|Win32
+		{16A174D7-74A8-426A-8D27-73C439B961AD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16A174D7-74A8-426A-8D27-73C439B961AD}.Debug|Win32.Build.0 = Debug|Win32
+		{16A174D7-74A8-426A-8D27-73C439B961AD}.Release|Win32.ActiveCfg = Release|Win32
+		{16A174D7-74A8-426A-8D27-73C439B961AD}.Release|Win32.Build.0 = Release|Win32
+		{22376FD6-88CA-486C-828B-2C19BD882218}.Debug|Win32.ActiveCfg = Debug|Win32
+		{22376FD6-88CA-486C-828B-2C19BD882218}.Debug|Win32.Build.0 = Debug|Win32
+		{22376FD6-88CA-486C-828B-2C19BD882218}.Release|Win32.ActiveCfg = Release|Win32
+		{22376FD6-88CA-486C-828B-2C19BD882218}.Release|Win32.Build.0 = Release|Win32
+		{2F01DA45-0A3C-48BE-B5DD-FA42165E2AF4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2F01DA45-0A3C-48BE-B5DD-FA42165E2AF4}.Debug|Win32.Build.0 = Debug|Win32
+		{2F01DA45-0A3C-48BE-B5DD-FA42165E2AF4}.Release|Win32.ActiveCfg = Release|Win32
+		{2F01DA45-0A3C-48BE-B5DD-FA42165E2AF4}.Release|Win32.Build.0 = Release|Win32
+		{B65D3699-EF0D-4340-9002-3A7371E233C3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B65D3699-EF0D-4340-9002-3A7371E233C3}.Debug|Win32.Build.0 = Debug|Win32
+		{B65D3699-EF0D-4340-9002-3A7371E233C3}.Release|Win32.ActiveCfg = Release|Win32
+		{B65D3699-EF0D-4340-9002-3A7371E233C3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

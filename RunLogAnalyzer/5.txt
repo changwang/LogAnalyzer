@@ -1,0 +1,3 @@
+threadId:1 write_var:a oldVarValue:1 newVarValue:2
+
+threadId:2 write_var:a oldVarValue:2 newVarValue:3

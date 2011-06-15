@@ -1,0 +1,1 @@
+threadId:7 write_var:27744459 oldVarValue:1 newVarValue:0
