@@ -30,6 +30,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
 
     _btn_parse = new QPushButton(centralWidget);
     _btn_parse->setText("Parse");
+    _btn_parse->setEnabled(false);
     connect(_btn_parse, SIGNAL(clicked()), this, SLOT(OnParse(void)));
 
     _prg_bar = new QProgressBar(centralWidget);
@@ -45,7 +46,6 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
 
     QGroupBox *grp_result = new QGroupBox(centralWidget);
     grp_result->setTitle("Result");
-    grp_result->setEnabled(true);
 
     hboxLayout = new QHBoxLayout(grp_result);
     hboxLayout->setSpacing(5);
@@ -87,8 +87,10 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
 void LAWindow::OnChooseLogFile()
 {
     _filePath = QFileDialog::getOpenFileName(this);
-    if ((_filePath != NULL) && (_filePath != ""))
+    if ((_filePath != NULL) && (_filePath != "")) {
         _lbl_path->setText(_filePath);
+        _btn_parse->setEnabled(true);
+    }
 }
 
 void LAWindow::OnParse()
