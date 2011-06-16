@@ -46,8 +46,6 @@ void Parser::Start(Log *log, const string &address, const string &dump)
     Z3_ast cu = CreateUniquenessConstraint(entries);
 
     Z3_ast cc = CreateCoherenceConstraint(entries, dump);
-
-    Z3_ast cl = CreateCoherenceLastConstraint(entries, dump);
     
     if (ct != NULL)
         c = ct;
@@ -75,19 +73,6 @@ void Parser::Start(Log *log, const string &address, const string &dump)
         else if (c == NULL)
         {
             c = cc;
-        }
-    }
-
-    if (cl != NULL)
-    {
-        if (c != NULL)
-        {
-            Z3_ast args[] = { c, cl };
-            c = Z3_mk_and(_ctx, 2, args);
-        }
-        else if (c == NULL)
-        {
-            c = cl;
         }
     }
 
@@ -219,7 +204,8 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
         {
             LogEntry cfle = cfs.back(); // retrieve M_j from CFS
             cfs.pop_back();
-            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent.GetSymbolVarible(_ctx), cfle.GetSymbolVarible(_ctx)); // M_i < M_j
+            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent.GetSymbolVarible(_ctx), 
+                                              cfle.GetSymbolVarible(_ctx)); // M_i < M_j
             
             vector<LogEntry> tmppfs = pfs;  // get a copy, because later using pop_back will destroy PFS
             Z3_ast pf_constrs = NULL;       // constraint for M_k in PFS
@@ -232,9 +218,11 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                 if (cfle.GetTotalOrderNum() != pfle.GetTotalOrderNum())
                 {
                     // M_k < M_i
-                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), ent.GetSymbolVarible(_ctx));
+                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), 
+                                                 ent.GetSymbolVarible(_ctx));
                     // M_j < M_k
-                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), pfle.GetSymbolVarible(_ctx));
+                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), 
+                                                 pfle.GetSymbolVarible(_ctx));
                     Z3_ast args[] = { arg1, arg2 };
                     Z3_ast pf_constr = Z3_mk_or(_ctx, 2, args); // (M_k < M_i) U (M_j < M_k)
                     if (pffirst)
@@ -280,7 +268,8 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                 last.pop_back();
                 if (lstle.GetTotalOrderNum() != ent.GetTotalOrderNum())
                 {
-                    Z3_ast lstcnt = Z3_mk_lt(_ctx, lstle.GetSymbolVarible(_ctx), ent.GetSymbolVarible(_ctx));
+                    Z3_ast lstcnt = Z3_mk_lt(_ctx, lstle.GetSymbolVarible(_ctx), 
+                                                   ent.GetSymbolVarible(_ctx));
                     if (lstfirst)
                     {
                         // M_k < M_i
@@ -329,43 +318,6 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
 #endif
 
     return cc_ast;
-}
-
-Z3_ast Parser::CreateCoherenceLastConstraint(vector<LogEntry> &entries, const string &dump)
-{
-    Z3_ast cl = NULL;
-    bool first = true;
-
-    vector<LogEntry> last = CreateLastSet(entries);
-    vector<LogEntry>::iterator lsitr;
-    vector<LogEntry>::iterator innerlsitr;
-
-    for (lsitr = last.begin(); lsitr != last.end(); lsitr++)
-    {
-        if (lsitr->GetNewValue() == dump)
-        {
-            for (innerlsitr = last.begin(); innerlsitr != last.end(); innerlsitr++)
-            {
-                if (innerlsitr->GetTotalOrderNum() != lsitr->GetTotalOrderNum() &&
-                    innerlsitr->GetNewValue() != dump)
-                {
-                    Z3_ast less = Z3_mk_lt(_ctx, innerlsitr->GetSymbolVarible(_ctx), lsitr->GetSymbolVarible(_ctx));
-                    if (first)
-                    {
-                        cl = less;
-                        first = false;
-                    }
-                    else
-                    {
-                        Z3_ast args[2] = { cl, less };
-                        cl = Z3_mk_or(_ctx, 2, args);
-                    }
-                }
-            }
-        }
-    }
-
-    return cl;
 }
 
 /*

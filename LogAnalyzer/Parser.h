@@ -21,7 +21,6 @@ public:
     Z3_ast CreateThreadOrderConstraint(vector<LogEntry> &entries);
     Z3_ast CreateUniquenessConstraint(vector<LogEntry> &entries);
     Z3_ast CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump);
-    Z3_ast CreateCoherenceLastConstraint(vector<LogEntry> &entries, const string &dump);
 
     Z3_model GetResult(void);
 
