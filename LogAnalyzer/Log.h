@@ -21,7 +21,7 @@ class Log
 {
 public:
     Log(Z3_context ctx, const string logname = "");
-    virtual ~Log(void) {};
+    virtual ~Log(void) {}
     void ParseLog(void);
     map<string, vector<LogEntry> >& GetParsedAddresses(void) { return _addresses; }
 

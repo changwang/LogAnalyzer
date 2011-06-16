@@ -16,31 +16,28 @@ class LAWindow : public QMainWindow
 {
     Q_OBJECT
 
-    QPushButton *btn_choose;
-    QPushButton *btn_parse;
-    QPushButton *btn_start;
+    QPushButton *_btn_choose;
+    QPushButton *_btn_parse;
+    QPushButton *_btn_start;
 
-    QGridLayout *gridLayout;
-    QHBoxLayout *hboxLayout;
+    QLabel *_lbl_path;
 
-    QLabel *lbl_path;
+    QListWidget *_lst_address;
+    QTableWidget *_tbl_orders;
 
-    QListWidget *lst_address;
-    QTableWidget *tbl_orders;
-
-    QString filePath;
+    QString _filePath;
     Parser _parser;
     Log *_log;
 
 public:
     LAWindow(QWidget *parent = 0, Qt::WFlags flags = 0);
-    ~LAWindow();
+    virtual ~LAWindow() {}
 
 public slots:
 
-    void OnChooseLogFile();
-    void OnParse();
-    void OnStart();
+    void OnChooseLogFile(void);
+    void OnParse(void);
+    void OnStart(void);
 
 };
 
