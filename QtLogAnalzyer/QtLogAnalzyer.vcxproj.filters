@@ -46,8 +46,14 @@
     <ClCompile Include="GeneratedFiles\qrc_qtloganalzyer.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="AddressUpdateThread.cpp">
+    <ClCompile Include="OrderUpdateThread.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OrderUpdateThread.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OrderUpdateThread.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,13 +63,11 @@
     <CustomBuild Include="qtloganalzyer.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="OrderUpdateThread.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QtLogAnalzyer.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="AddressUpdateThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
