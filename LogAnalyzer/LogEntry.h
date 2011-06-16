@@ -41,13 +41,15 @@ public:
     void SetTotalOrderNum(unsigned num) { this->_totalOrderNum = num; }
     unsigned GetTotalOrderNum(void) const { return _totalOrderNum; }
 
-    Z3_ast GetSymbolVarible(Z3_context ctx);
-
     void SetSymbolValue(unsigned symValue) { this->_symValue = symValue; }
     unsigned GetSybmolValue(void) const { return _symValue; }
 
+    Z3_ast GetSymbolVarible(Z3_context ctx);
+
     const bool operator ==(const LogEntry &other) const; // whether two entries are the same
     const bool operator <(const LogEntry &other) const;  // used by sort() method
+
+    bool FromSameThread(const LogEntry &other) const;
 
     string ToString(void) const;
 

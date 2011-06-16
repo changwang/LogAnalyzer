@@ -72,6 +72,14 @@ const bool LogEntry::operator <(const LogEntry &other) const
 }
 
 /*
+  wheter two entries are from the same thread.
+ */
+bool FromSameThread(const LogEntry &other) const
+{
+    return _threadID == other.GetThreadId();
+}
+
+/*
   displays log entry with a readable style.
  */
 string LogEntry::ToString(void) const

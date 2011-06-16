@@ -101,19 +101,19 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
     bool first = true;
 
     Z3_ast left, right, constr;
-    vector<LogEntry>::iterator outteritr;
-    vector<LogEntry>::iterator inneritr;
+    vector<LogEntry>::iterator leftitr;
+    vector<LogEntry>::iterator rightitr;
 
-    for (outteritr = entries.begin(); outteritr != entries.end(); outteritr++)
+    for (leftitr = entries.begin(); leftitr != entries.end(); leftitr++)
     {
-        left = outteritr->GetSymbolVarible(_ctx);
-        for (inneritr = outteritr; inneritr != entries.end(); inneritr++)
+        left = leftitr->GetSymbolVarible(_ctx);
+        for (rightitr = leftitr; rightitr != entries.end(); rightitr++)
         {
             // if M_i and M_j are in the same thread, and M_i < M_j
-            if (inneritr->GetThreadId() == outteritr->GetThreadId() &&
-                inneritr->GetTotalOrderNum() != outteritr->GetTotalOrderNum())
+            if (rightitr->FromSameThread(*leftitr) &&
+                rightitr->GetTotalOrderNum() != leftitr->GetTotalOrderNum())
             {
-                right = inneritr->GetSymbolVarible(_ctx);
+                right = rightitr->GetSymbolVarible(_ctx);
                 constr = Z3_mk_lt(_ctx, left, right);
                 if (first)
                 {
@@ -145,18 +145,18 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
     bool first = true;
 
     Z3_ast left, right, constr;
-    vector<LogEntry>::iterator outteritr;
-    vector<LogEntry>::iterator inneritr;
+    vector<LogEntry>::iterator leftitr;
+    vector<LogEntry>::iterator rightitr;
 
-    for (outteritr = entries.begin(); outteritr != entries.end(); outteritr++)
+    for (leftitr = entries.begin(); leftitr != entries.end(); leftitr++)
     {
-        left = outteritr->GetSymbolVarible(_ctx);
-        for (inneritr = outteritr; inneritr != entries.end(); inneritr++)
+        left = leftitr->GetSymbolVarible(_ctx);
+        for (rightitr = leftitr; rightitr != entries.end(); rightitr++)
         {
             // if M_i and M_j are not in the same thread, then M_i != M_j
-            if (inneritr->GetThreadId() != outteritr->GetThreadId())
+            if (rightitr->FromSameThread(*leftitr))
             {
-                right = inneritr->GetSymbolVarible(_ctx);
+                right = rightitr->GetSymbolVarible(_ctx);
                 constr = Z3_mk_not(_ctx, Z3_mk_eq(_ctx, left, right));
                 if (first)
                 {
@@ -181,6 +181,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
 
 /*
   creates coherence constraint by given entries.
+  TODO: this one definitely needs refactory.
  */
 Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump)
 {
@@ -327,25 +328,26 @@ vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const v
 {
     vector<LogEntry> pfs;
     vector<LogEntry>::const_iterator itr;
-    bool firstSucc = true, findFlag = false;    // findFlag means find the given entry in the argument
-    LogEntry succ(0);
+    bool firstSucc = false;     // firstSucc means find the first successor
+    bool findFlag = false;      // findFlag means find the given entry from the argument entries
+    LogEntry succ(0);   // first successor
  
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
-        if ((itr->GetThreadId() == entry.GetThreadId()))
+        if (!firstSucc && (itr->FromSameThread(entry)))    // in the same thread, try to find first successor
         {
-            if (findFlag && itr->GetThreadId() == entry.GetThreadId() && firstSucc)
+            if (findFlag && !firstSucc)
             {
-                firstSucc = false;
+                firstSucc = true;
                 succ = *itr;
             }
-
-            if (itr->GetTotalOrderNum() == entry.GetTotalOrderNum())
+            
+            if (*itr == entry)
             {
                 findFlag = true;
             }
         }
-        else if (itr->GetThreadId() != entry.GetThreadId())
+        else if (!itr->FromSameThread(entry))
         {
             pfs.push_back(*itr);
         }
@@ -365,7 +367,6 @@ vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const v
 vector<LogEntry> Parser::CreateCoherenceFollowers(const LogEntry &entry, const vector<LogEntry> &pfs)
 {
     vector<LogEntry> cfs;
-
     vector<LogEntry>::const_iterator pfsitr;
 
     for (pfsitr = pfs.begin(); pfsitr != pfs.end(); pfsitr++)
@@ -395,7 +396,7 @@ vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
     {
         for (insertitr = last.begin(); insertitr != last.end(); insertitr++)
         {
-            if (itr->GetThreadId() == insertitr->GetThreadId())
+            if (itr->FromSameThread(*insertitr))
             {
                 *insertitr = *itr;
                 flag = true;

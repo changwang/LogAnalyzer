@@ -6,6 +6,10 @@
 #include "LogEntry.h"
 #include "Log.h"
 
+/*
+  Parser is the core class, which using log and log entries to get the total order,
+  sets the symbolic values, calculates the final model.
+ */
 class Parser
 {
 public:
