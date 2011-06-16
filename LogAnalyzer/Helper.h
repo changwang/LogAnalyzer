@@ -29,10 +29,10 @@ void PrintMap(const map<string, vector<LogEntry> > &mp);
 
 void PrintLogEntry(const LogEntry &entry);
 
-string IntToString(const int i);
+string IntToString(int i);
 
 OperationType StringToOpType(const string &strOp);
 
-string OpTypeToString(const OperationType op);
+string OpTypeToString(OperationType op);
 
 #endif

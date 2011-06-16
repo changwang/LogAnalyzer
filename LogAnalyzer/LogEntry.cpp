@@ -74,7 +74,7 @@ const bool LogEntry::operator <(const LogEntry &other) const
 /*
   displays log entry with a readable style.
  */
-string LogEntry::ToString() const
+string LogEntry::ToString(void) const
 {
     string strEntry("Thread " + IntToString(GetThreadId()));
     strEntry.append(": " + OpTypeToString(GetOpType()));

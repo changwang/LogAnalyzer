@@ -51,7 +51,7 @@ void PrintLogEntry(const LogEntry &entry)
 /*
   helper method, convert an integer to string object.
  */
-string IntToString(const int i)
+string IntToString(int i)
 {
     char tmp[kLAConvertArrayLength];
     // itoa(i, tmp, 10); this is not a standard method
@@ -89,7 +89,7 @@ OperationType StringToOpType(const string &strOp)
 /*
   helper method, convert OperationType to readable string
  */
-string OpTypeToString(const OperationType op)
+string OpTypeToString(OperationType op)
 {
     switch (op)
     {

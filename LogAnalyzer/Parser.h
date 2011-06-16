@@ -9,11 +9,11 @@
 class Parser
 {
 public:
-    Parser();
-    virtual ~Parser();
+    Parser(void);
+    virtual ~Parser(void);
 
-    Z3_config GetZ3Config() const { return _cfg; }
-    Z3_context GetZ3Context() const { return _ctx; }
+    Z3_config GetZ3Config(void) const { return _cfg; }
+    Z3_context GetZ3Context(void) const { return _ctx; }
 
     void Start(Log *log, const string &address, const string &dump);
     string DumpValue(const string &address);
@@ -23,7 +23,7 @@ public:
     Z3_ast CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump);
     Z3_ast CreateCoherenceLastConstraint(vector<LogEntry> &entries, const string &dump);
 
-    Z3_model GetResult();
+    Z3_model GetResult(void);
 
 private:
     Z3_config _cfg;

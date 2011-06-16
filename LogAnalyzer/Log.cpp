@@ -17,7 +17,7 @@ Log::Log(Z3_context ctx, const string logname)
   Core method, retrieve each line from log file,
   create LogEntry object based on the content.
  */
-void Log::ParseLog()
+void Log::ParseLog(void)
 {
     string line;
     vector<string> tokens;

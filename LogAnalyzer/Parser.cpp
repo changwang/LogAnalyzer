@@ -3,7 +3,7 @@
 #include "Parser.h"
 #include "Helper.h"
 
-Parser::Parser()
+Parser::Parser(void)
 {
     _cfg = Z3_mk_config();
     Z3_set_param_value(_cfg, "MODEL", "true");
@@ -12,7 +12,7 @@ Parser::Parser()
     _log = NULL;
 }
 
-Parser::~Parser()
+Parser::~Parser(void)
 {
     if (_ctx != NULL) Z3_del_context(_ctx);
     Z3_del_config(_cfg);
@@ -465,7 +465,7 @@ vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
 /*
   return the final result.
  */
-Z3_model Parser::GetResult()
+Z3_model Parser::GetResult(void)
 {
     Z3_check_and_get_model(_ctx, &_model);
 

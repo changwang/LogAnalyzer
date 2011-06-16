@@ -21,11 +21,11 @@ class Log
 {
 public:
     Log(Z3_context ctx, const string logname = "");
-    virtual ~Log() {};
-    void ParseLog();
-    map<string, vector<LogEntry> >& GetParsedAddresses() { return _addresses; }
+    virtual ~Log(void) {};
+    void ParseLog(void);
+    map<string, vector<LogEntry> >& GetParsedAddresses(void) { return _addresses; }
 
-    string GetLogFileName() const { return _logFileName; }
+    string GetLogFileName(void) const { return _logFileName; }
     void SetLogFileName(string logname) { _logFileName = logname; }
 
 private:

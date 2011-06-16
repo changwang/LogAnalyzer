@@ -22,34 +22,34 @@ class LogEntry
 {
 public:
     LogEntry(unsigned tid = 0);
-    virtual ~LogEntry() {}
+    virtual ~LogEntry(void) {}
     
-    unsigned GetThreadId() const { return _threadID; }
+    unsigned GetThreadId(void) const { return _threadID; }
 
     void SetOpType(OperationType op) { this->_op = op; }
-    OperationType GetOpType() const { return _op; }
+    OperationType GetOpType(void) const { return _op; }
 
     void SetAddress(string addr) { this->_address = addr; }
-    string GetAddress() const { return _address; }
+    string GetAddress(void) const { return _address; }
 
     void SetOldValue(string oldValue) { this->_oldValue = oldValue; }
-    string GetOldValue() const { return _oldValue; }
+    string GetOldValue(void) const { return _oldValue; }
 
     void SetNewValue(string newValue) { this->_newValue = newValue; }
-    string GetNewValue() const { return _newValue; }
+    string GetNewValue(void) const { return _newValue; }
 
     void SetTotalOrderNum(unsigned num) { this->_totalOrderNum = num; }
-    unsigned GetTotalOrderNum() const { return _totalOrderNum; }
+    unsigned GetTotalOrderNum(void) const { return _totalOrderNum; }
 
     Z3_ast GetSymbolVarible(Z3_context ctx);
 
     void SetSymbolValue(unsigned symValue) { this->_symValue = symValue; }
-    unsigned GetSybmolValue() const { return _symValue; }
+    unsigned GetSybmolValue(void) const { return _symValue; }
 
     const bool operator ==(const LogEntry &other) const; // whether two entries are the same
     const bool operator <(const LogEntry &other) const;  // used by sort() method
 
-    string ToString() const;
+    string ToString(void) const;
 
 private:
     unsigned _threadID;
