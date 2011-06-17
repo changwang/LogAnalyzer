@@ -154,7 +154,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
         for (rightitr = leftitr; rightitr != entries.end(); rightitr++)
         {
             // if M_i and M_j are not in the same thread, then M_i != M_j
-            if (rightitr->FromSameThread(*leftitr))
+            if (!rightitr->FromSameThread(*leftitr))
             {
                 right = rightitr->GetSymbolVarible(_ctx);
                 constr = Z3_mk_not(_ctx, Z3_mk_eq(_ctx, left, right));

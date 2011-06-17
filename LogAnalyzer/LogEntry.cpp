@@ -74,7 +74,7 @@ const bool LogEntry::operator <(const LogEntry &other) const
 /*
   wheter two entries are from the same thread.
  */
-bool FromSameThread(const LogEntry &other) const
+bool LogEntry::FromSameThread(const LogEntry &other) const
 {
     return _threadID == other.GetThreadId();
 }
@@ -89,6 +89,5 @@ string LogEntry::ToString(void) const
     strEntry.append(":" + GetAddress());
     strEntry.append(" oldValue:" + GetOldValue());
     strEntry.append(" newValue:" + GetNewValue());
-    strEntry.append(" Order:" + IntToString(GetTotalOrderNum()));
     return strEntry;
 }
