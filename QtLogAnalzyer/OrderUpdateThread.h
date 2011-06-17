@@ -5,6 +5,9 @@
 #include <vector>
 #include "LogEntry.h"
 
+/*
+  back-end thread, used to sort log entries by symbolic value in ascending order.
+ */
 class OrderUpdateThread : public QThread
 {
     Q_OBJECT

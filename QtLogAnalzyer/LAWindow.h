@@ -3,21 +3,20 @@
 
 #include <QtGui/QMainWindow>
 #include <QtGui/QPushButton>
-#include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QGroupBox>
 #include <QtGui/QListWidget>
 #include <QtGui/QTableWidget>
 #include <QtGui/QProgressBar>
 #include "Log.h"
 #include "LogEntry.h"
 #include "Parser.h"
-#include "orderupdatethread.h"
+#include "OrderUpdateThread.h"
 
 class LAWindow : public QMainWindow
 {
     Q_OBJECT
 
+private:
     QPushButton *_btn_choose;
     QPushButton *_btn_parse;
     QPushButton *_btn_start;
@@ -37,7 +36,7 @@ class LAWindow : public QMainWindow
 
 public:
     LAWindow(QWidget *parent = 0, Qt::WFlags flags = 0);
-    virtual ~LAWindow() {}
+    virtual ~LAWindow(void) {}
 
 public slots:
 

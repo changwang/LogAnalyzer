@@ -1,15 +1,20 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
 #include <QtGui/QHeaderView>
+#include <QtGui/QGroupBox>
+#include <QtGui/QGridLayout>
 #include <map>
 #include <vector>
 #include "LAWindow.h"
 
 enum {
-    ResultColumnOrder,
-    ResultColumnLogEntry
+    ResultColumnOrder,      // index of order column
+    ResultColumnLogEntry    // index of log entry column
 } ResultColumn;
 
+/*
+  initializes all the components and layouts
+ */
 LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     : QMainWindow(parent, flags)
 {
@@ -33,7 +38,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     _btn_parse->setEnabled(false);
     connect(_btn_parse, SIGNAL(clicked()), this, SLOT(OnParse(void)));
 
-    _prg_bar = new QProgressBar(centralWidget);
+    _prg_bar = new QProgressBar(centralWidget);     // busy indicator
     _prg_bar->setMinimum(0);
     _prg_bar->setMaximum(0);
     _prg_bar->setTextVisible(false);
@@ -45,7 +50,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     gridLayout->addWidget(_prg_bar, 2, 0, 1, 2);
 
     QGroupBox *grp_result = new QGroupBox(centralWidget);
-    grp_result->setTitle("Result");
+    grp_result->setTitle("Result Panel");
 
     hboxLayout = new QHBoxLayout(grp_result);
     hboxLayout->setSpacing(5);
@@ -54,6 +59,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     _lst_address = new QListWidget(grp_result);
     connect(_lst_address, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
             this, SLOT(OnStart(void)));
+
     _btn_start = new QPushButton(grp_result);
     _btn_start->setText(">");
     connect(_btn_start, SIGNAL(clicked()), this, SLOT(OnStart(void)));
@@ -81,10 +87,15 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     resize(800, 600);
 
     _log = new Log(_parser.GetZ3Context());
-    connect(&_outhread, SIGNAL(OnFinishedSorting()), this, SLOT(OnUpdateOrders()));
+    
+    connect(&_outhread, SIGNAL(OnFinishedSorting(void)), 
+            this, SLOT(OnUpdateOrders(void)));
 }
 
-void LAWindow::OnChooseLogFile()
+/*
+  when "Choose Log" button is clicked
+ */
+void LAWindow::OnChooseLogFile(void)
 {
     _filePath = QFileDialog::getOpenFileName(this);
     if ((_filePath != NULL) && (_filePath != "")) {
@@ -93,7 +104,10 @@ void LAWindow::OnChooseLogFile()
     }
 }
 
-void LAWindow::OnParse()
+/*
+  when "Parse" button is clicked
+ */
+void LAWindow::OnParse(void)
 {
     _log->SetLogFileName(_filePath.toStdString());
     _log->ParseLog();
@@ -104,16 +118,18 @@ void LAWindow::OnParse()
     map<string, vector<LogEntry> >::const_iterator itr;
     for (itr = mp.begin(); itr != mp.end(); itr++)
     {
-        itr->first.c_str();
         _lst_address->addItem(QString::fromStdString(itr->first));
     }
 }
 
-void LAWindow::OnStart()
+/*
+  when item in the list is double clicked, or ">" button is clicked.
+ */
+void LAWindow::OnStart(void)
 {
     QList<QListWidgetItem *> items = _lst_address->selectedItems();
     if (items.empty()) return;
-    QListWidgetItem *item = items.first();
+    QListWidgetItem *item = items.first();  // only consider one item is chosen
 
     _tbl_orders->clearContents();
     _parser.Start(_log, item->text().toStdString(), "2");
@@ -127,6 +143,9 @@ void LAWindow::OnStart()
     }
 }
 
+/*
+  updates the table widget, by using ascending order for the order column.
+ */
 void LAWindow::OnUpdateOrders()
 {
     vector<LogEntry> entries = _outhread.entries();
