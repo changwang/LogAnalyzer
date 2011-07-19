@@ -2,6 +2,7 @@
 #define _PARSER__H_
 
 #include <vector>
+#include <cassert>
 #include "z3.h"
 #include "LogEntry.h"
 #include "Log.h"

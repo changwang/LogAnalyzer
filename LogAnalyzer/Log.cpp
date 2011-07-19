@@ -31,12 +31,12 @@ void Log::ParseLog(void)
         {
             getline(_logFile, line);
             tokens = TokenizeLine(line);
-#if kLAShowLog
+#if kLADebug
             PrintVectorOfString(tokens);
 #endif
             CreateLogEntryFromTokens(tokens);
         }
-#if kLAShowLog
+#if kLADebug
         PrintMap(_addresses);
 #endif
     }
@@ -60,6 +60,9 @@ vector<string> Log::TokenizeLine(const string &line)
         cout << "Can't duplicate string, Exiting..." << endl;
         exit(kLADupError);
     }
+
+    // make sure the string is seperated by spaces
+    assert(strstr(c_tok, kLogEntryTokenSeparator) != NULL);
 
     char *p = strtok(c_tok, kLogEntryTokenSeparator);
     while (p)
@@ -88,6 +91,9 @@ void Log::TokenByColon(const string &token, string &ret)
         exit(kLADupError);
     }
 
+    // make sure the token is seperated by colon
+    assert(strstr(c_tok, kLogEntryKeyValueSeparator) != NULL);
+
     // this p is the key
     char *p = strtok(c_tok, kLogEntryKeyValueSeparator);
 
@@ -111,6 +117,9 @@ void Log::TokenOpAndAddr(const string &token, string &op, string &addr)
         cout << "Can't duplicate token, Exiting..." << endl;
         exit(kLADupError);
     }
+
+    // make sure the token is seperated by colon
+    assert(strstr(c_tok, kLogEntryKeyValueSeparator) != NULL);
 
     char *p = strtok(c_tok, kLogEntryKeyValueSeparator);
     op = string(p);     // first one is operation type
@@ -186,7 +195,7 @@ void Log::CreateLogEntryFromTokens(const vector<string> &tokens)
     entry.SetOldValue(oldVal);
     entry.SetNewValue(newVal);
 
-#if kLAShowLog
+#if kLADebug
     PrintLogEntry(entry);
 #endif
 
@@ -198,6 +207,8 @@ void Log::CreateLogEntryFromTokens(const vector<string> &tokens)
  */
 void Log::AddLogEntryToMap(LogEntry &entry)
 {
+    // TODO: think about using map.insert() instead of iterator
+
     map<string, vector<LogEntry> >::iterator mitr;
     // find out whether the give address is in the map.
     mitr = _addresses.find(entry.GetAddress());

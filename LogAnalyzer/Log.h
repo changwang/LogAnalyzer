@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cassert>
 #include "z3.h"
 #include "LogEntry.h"
 

@@ -23,6 +23,8 @@ Parser::~Parser(void)
  */
 void Parser::Start(Log *log, const string &address, const string &dump)
 {
+    // each time creates a new context, 
+    // otherwise the context contains the ast nodes from previous calculation
     if (_ctx != NULL)
     {
         Z3_del_context(_ctx);        
@@ -31,11 +33,13 @@ void Parser::Start(Log *log, const string &address, const string &dump)
     _log = log;
     if (_log->GetParsedAddresses().empty())
         return;
+
     map<string, vector<LogEntry> > mp = _log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
     mitr = mp.find(address);
     if (mitr == mp.end())
         return;
+
     _address = address;
     vector<LogEntry> entries = mitr->second;
 
@@ -128,7 +132,7 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
             }
         }
     }
-#if kLAShowLog
+#if kLADebug
     if (ct_ast != NULL)
         cout << Z3_ast_to_string(_ctx, ct_ast) << endl;
 #endif
@@ -171,7 +175,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
             }
         }
     }
-#if kLAShowLog
+#if kLADebug
     if (cu_ast != NULL)
         cout << Z3_ast_to_string(_ctx, cu_ast) << endl;
 #endif
@@ -313,7 +317,7 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
             }
         }
     }
-#if kLAShowLog
+#if kLADebug
     if (cc_ast != NULL)
         cout << Z3_ast_to_string(_ctx, cc_ast) << endl;
 #endif

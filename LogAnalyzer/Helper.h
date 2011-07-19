@@ -13,7 +13,7 @@ using namespace std;
    in order to print out some information
 */
 
-const int kLAShowLog = 0;
+const int kLADebug = 0;
 
 const int kLADupError = -1000;
 

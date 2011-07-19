@@ -1,6 +1,7 @@
 #ifndef _LOGENTRY__H_
 #define _LOGENTRY__H_
 
+#include <cassert>
 #include <string>
 #include "z3.h"
 

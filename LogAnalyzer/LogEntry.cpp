@@ -25,13 +25,15 @@ LogEntry::LogEntry(unsigned tid)
  */
 void LogEntry::DeclareSymbolVarible(Z3_context ctx)
 {
+    assert(ctx != NULL); // make sure context is not NULL
+
     _ctx = ctx;
     string symStr = kLAZ3VarPrefix;
     symStr.append(IntToString(_threadID) + "_" + IntToString(_totalOrderNum));
     Z3_symbol s = Z3_mk_string_symbol(_ctx, symStr.c_str());
     _symVariable = Z3_mk_const(_ctx, s, Z3_mk_int_sort(_ctx));
 
-#if kLAShowLog
+#if kLADebug
     cout << Z3_ast_to_string(_ctx, _symVariable) << endl;
 #endif
     // make sure the symbol variable value is greater than 0
