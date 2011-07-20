@@ -8,9 +8,8 @@ Parser::Parser(void)
     Z3_set_param_value(_cfg, "MODEL", "true");
 #if kLADebug
     Z3_set_param_value(_cfg, "TRACE", "true"); // enable tracing for the Axiom Profiler tool
-    Z3_set_param_value(_cfg, "TRACE_FILE_NAME", "trace.log");   // tracing file name
+    Z3_set_param_value(_cfg, "TRACE_FILE_NAME", "'LATrace.log'");   // tracing file name
     Z3_set_param_value(_cfg, "DISPLAY_ERROR_FOR_VISUAL_STUDIO", "true");    // display error messages in Visual Studio format
-    Z3_set_param_value(_cfg, "STATISTICS", "true"); // display statistics
 #endif
     _ctx = NULL;
     _model = NULL;
