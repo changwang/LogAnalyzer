@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <list>
 #include "Parser.h"
 #include "Helper.h"
 
@@ -7,6 +6,12 @@ Parser::Parser(void)
 {
     _cfg = Z3_mk_config();
     Z3_set_param_value(_cfg, "MODEL", "true");
+#if kLADebug
+    Z3_set_param_value(_cfg, "TRACE", "true"); // enable tracing for the Axiom Profiler tool
+    Z3_set_param_value(_cfg, "TRACE_FILE_NAME", "trace.log");   // tracing file name
+    Z3_set_param_value(_cfg, "DISPLAY_ERROR_FOR_VISUAL_STUDIO", "true");    // display error messages in Visual Studio format
+    Z3_set_param_value(_cfg, "STATISTICS", "true"); // display statistics
+#endif
     _ctx = NULL;
     _model = NULL;
     _log = NULL;
@@ -25,10 +30,8 @@ void Parser::Start(Log *log, const string &address, const string &dump)
 {
     // each time creates a new context, 
     // otherwise the context contains the ast nodes from previous calculation
-    if (_ctx != NULL)
-    {
-        Z3_del_context(_ctx);        
-    }
+    if (_ctx != NULL) Z3_del_context(_ctx);        
+
     _ctx = Z3_mk_context(_cfg);
     _log = log;
     if (_log->GetParsedAddresses().empty())
@@ -61,7 +64,7 @@ void Parser::Start(Log *log, const string &address, const string &dump)
             Z3_ast args[] = { c, cu };
             c = Z3_mk_and(_ctx, 2, args);
         }
-        else if (c == NULL)
+        else
         {
             c = cu;
         }
@@ -74,7 +77,7 @@ void Parser::Start(Log *log, const string &address, const string &dump)
             Z3_ast args[] = { c, cc };
             c = Z3_mk_and(_ctx, 2, args);
         }
-        else if (c == NULL)
+        else
         {
             c = cc;
         }

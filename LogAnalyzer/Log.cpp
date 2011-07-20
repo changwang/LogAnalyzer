@@ -22,6 +22,10 @@ void Log::ParseLog(void)
     string line;
     vector<string> tokens;
     ifstream _logFile;
+    
+    // log file name should not be null or empty string
+    assert(_logFileName.compare("") != 0);
+    
     _logFile.open(_logFileName);
     if (!_addresses.empty()) _addresses.clear();
     
@@ -136,10 +140,7 @@ void Log::TokenOpAndAddr(const string &token, string &op, string &addr)
 void Log::CreateLogEntryFromTokens(const vector<string> &tokens)
 {
     // if there is nothing in the list, ignore it.
-    if (tokens.empty())
-    {
-        return;
-    }
+    if (tokens.empty()) return;
 
     vector<string>::const_iterator itr;
     unsigned tokIdx = 0;    // remember which token is being handled
@@ -189,7 +190,7 @@ void Log::CreateLogEntryFromTokens(const vector<string> &tokens)
     }
 
     // create an instance of LogEntry, and save corresponding values to it.
-    LogEntry entry(atoi(threadID.c_str()));     // atoi is not a standard function
+    LogEntry entry(atoi(threadID.c_str()));
     entry.SetOpType(opType);
     entry.SetAddress(addr);
     entry.SetOldValue(oldVal);
@@ -207,8 +208,6 @@ void Log::CreateLogEntryFromTokens(const vector<string> &tokens)
  */
 void Log::AddLogEntryToMap(LogEntry &entry)
 {
-    // TODO: think about using map.insert() instead of iterator
-
     map<string, vector<LogEntry> >::iterator mitr;
     // find out whether the give address is in the map.
     mitr = _addresses.find(entry.GetAddress());

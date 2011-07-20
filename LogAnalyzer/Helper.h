@@ -12,11 +12,13 @@ using namespace std;
 /* Macro indicates whether it is under development,
    in order to print out some information
 */
-
 const int kLADebug = 0;
 
 const int kLADupError = -1000;
 
+/*
+  prefix used for symbolic variable names
+ */
 const string kLAZ3VarPrefix = "LA_";
 
 const int kLAConvertArrayLength = 5;

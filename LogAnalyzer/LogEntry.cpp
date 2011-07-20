@@ -29,7 +29,7 @@ void LogEntry::DeclareSymbolVarible(Z3_context ctx)
 
     _ctx = ctx;
     string symStr = kLAZ3VarPrefix;
-    symStr.append(IntToString(_threadID) + "_" + IntToString(_totalOrderNum));
+    symStr += IntToString(_threadID) + "_" + IntToString(_totalOrderNum);
     Z3_symbol s = Z3_mk_string_symbol(_ctx, symStr.c_str());
     _symVariable = Z3_mk_const(_ctx, s, Z3_mk_int_sort(_ctx));
 

@@ -41,7 +41,7 @@ void PrintMap(const map<string, vector<LogEntry> > &mp)
 }
 
 /*
-  helper method, in order to print out a log entry with readable content.
+  helper method, in order to print out a log entry with readable format.
  */
 void PrintLogEntry(const LogEntry &entry)
 {
