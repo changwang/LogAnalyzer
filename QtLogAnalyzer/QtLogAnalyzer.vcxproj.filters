@@ -60,14 +60,14 @@
     <CustomBuild Include="LAWindow.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="qtloganalzyer.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="OrderUpdateThread.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="qtloganalyzer.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="QtLogAnalzyer.rc" />
+    <ResourceCompile Include="QtLogAnalyzer.rc" />
   </ItemGroup>
 </Project>

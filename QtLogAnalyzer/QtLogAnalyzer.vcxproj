@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B65D3699-EF0D-4340-9002-3A7371E233C3}</ProjectGuid>
     <Keyword>Qt4VSv1.0</Keyword>
+    <ProjectName>QtLogAnalyzer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -114,7 +115,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="qtloganalzyer.qrc">
+    <CustomBuild Include="qtloganalyzer.qrc">
       <FileType>Document</FileType>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
@@ -127,7 +128,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="QtLogAnalzyer.rc" />
+    <ResourceCompile Include="QtLogAnalyzer.rc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="OrderUpdateThread.h">

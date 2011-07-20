@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RunLogAnalyzer", "RunLogAna
 		{18131ED8-96F6-468C-806A-680BBE695E91} = {18131ED8-96F6-468C-806A-680BBE695E91}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtLogAnalzyer", "QtLogAnalzyer\QtLogAnalzyer.vcxproj", "{B65D3699-EF0D-4340-9002-3A7371E233C3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtLogAnalyzer", "QtLogAnalyzer\QtLogAnalyzer.vcxproj", "{B65D3699-EF0D-4340-9002-3A7371E233C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
