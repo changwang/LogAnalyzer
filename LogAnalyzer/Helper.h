@@ -5,6 +5,10 @@
 #include <vector>
 #include <map>
 #include <string>
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include "ezlogger_headers.hpp"
 #include "LogEntry.h"
 
 using namespace std;
@@ -36,5 +40,20 @@ string IntToString(int i);
 OperationType StringToOpType(const string &strOp);
 
 string OpTypeToString(OperationType op);
+
+inline double PCPerformanceFreq()
+{
+    LARGE_INTEGER li;
+    if (!QueryPerformanceFrequency(&li))
+        cout << "Failed!";
+    return double(li.QuadPart) / 1000.0;
+}
+
+inline __int64 PerformanceCounter()
+{
+    LARGE_INTEGER li;
+    QueryPerformanceCounter(&li);
+    return li.QuadPart;
+}
 
 #endif
