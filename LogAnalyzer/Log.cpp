@@ -34,6 +34,7 @@ void Log::ParseLog(void)
         while (_logFile.good())
         {
             getline(_logFile, line);
+            if (line.compare("") == 0) continue;    // ignore empty line
             tokens = TokenizeLine(line);
 #if kLADebug
             PrintVectorOfString(tokens);

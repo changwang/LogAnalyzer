@@ -86,7 +86,7 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_OrderUpdateThread.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_qtloganalzyer.cpp">
+    <ClCompile Include="GeneratedFiles\qrc_qtloganalyzer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

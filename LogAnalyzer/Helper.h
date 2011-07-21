@@ -12,7 +12,7 @@ using namespace std;
 /* Macro indicates whether it is under development,
    in order to print out some information
 */
-#define kLADebug    1
+#define kLADebug    0
 
 const int kLADupError = -1000;
 
