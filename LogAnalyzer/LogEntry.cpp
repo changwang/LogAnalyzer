@@ -25,6 +25,9 @@ LogEntry::LogEntry(unsigned tid)
  */
 void LogEntry::DeclareSymbolVarible(Z3_context ctx)
 {
+#if kLAProduction
+    if (ctx == NULL) EZLOGGER("Z3 context cannot be NULL!");
+#endif
     assert(ctx != NULL); // make sure context is not NULL
 
     _ctx = ctx;

@@ -13,10 +13,16 @@
 
 using namespace std;
 
-/* Macro indicates whether it is under development,
-   in order to print out some information
+/* macro indicates whether it is under development,
+   in order to print out some information.
 */
-#define kLADebug    0
+#define kLADebug        1
+
+/*
+  macro indicates it's under production environment,
+  then redirects the log information to log file instead of console.
+ */
+#define kLAProduction   1
 
 const int kLADupError = -1000;
 
@@ -26,6 +32,16 @@ const int kLADupError = -1000;
 const string kLAZ3VarPrefix = "LA_";
 
 const int kLAConvertArrayLength = 5;
+
+/*
+  log file name used by Z3
+ */
+const char kZ3LogFileName[] = "LA_Z3_Trace.log";
+
+/*
+  log file name used by Log Analyzer
+ */
+const char kLALogFileName[] = "LA_Trace.log";
 
 void PrintVectorOfString(const vector<string> &strs);
 
@@ -41,6 +57,9 @@ OperationType StringToOpType(const string &strOp);
 
 string OpTypeToString(OperationType op);
 
+/*
+  get the PC CPU frequency.
+ */
 inline double PCPerformanceFreq()
 {
     LARGE_INTEGER li;
@@ -49,6 +68,9 @@ inline double PCPerformanceFreq()
     return double(li.QuadPart) / 1000.0;
 }
 
+/*
+  get the CPU counter.
+ */
 inline __int64 PerformanceCounter()
 {
     LARGE_INTEGER li;
