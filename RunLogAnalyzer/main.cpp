@@ -28,7 +28,7 @@ int main()
     }
 
     CounterEnd = PerformanceCounter();
-    cout << "Time elapsed: " << double(CounterEnd-CounterStart)/PCPerformanceFreq() << endl;
+    cout << "Time elapsed: " << double(CounterEnd-CounterStart)/PCPerformanceFreq() << " ms" << endl;
     cout << Z3_model_to_string(parser.GetZ3Context(), parser.GetResult());
     return 0;
 }

@@ -39,7 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\Z3\include;$(SolutionDir)\gtest\include;$(SolutionDir)\LogAnalyzer;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\ezlogger;$(SolutionDir)\Z3\include;$(SolutionDir)\gtest\include;$(SolutionDir)\LogAnalyzer;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Z3\bin_mt;$(SolutionDir)\gtest;$(OutputPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
