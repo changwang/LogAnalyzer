@@ -52,7 +52,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)\ezlogger;$(SolutionDir)\Z3\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\Z3\bin_mt;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\Z3\bin;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
