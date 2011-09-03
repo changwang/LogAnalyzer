@@ -4,15 +4,21 @@
 const char *kLogEntryTokenSeparator = " ";
 const char *kLogEntryKeyValueSeparator = ":";
 
+Log::Log()
+{
+    _logFileName = "";
+    _ctx = NULL;
+}
+
 /*
   Constructor, pass the log file name to open it.
- */
+
 Log::Log(Z3_context ctx, const string logname)
 {
     _logFileName = logname;
     _ctx = ctx;
 }
-
+*/
 /*
   Core method, retrieve each line from log file,
   create LogEntry object based on the content.

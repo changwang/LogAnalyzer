@@ -12,12 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="JavaPlainLog.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="LogEntry.cpp" />
     <ClCompile Include="Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="JavaPlainLog.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="LogEntry.h" />
     <ClInclude Include="Parser.h" />
