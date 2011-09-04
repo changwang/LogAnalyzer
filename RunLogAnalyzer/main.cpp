@@ -5,6 +5,7 @@
 #include "Helper.h"
 #include "Parser.h"
 #include "Log.h"
+#include "JavaPlainLog.h"
 #include "LogEntry.h"
 
 int main()
@@ -13,18 +14,18 @@ int main()
     __int64 CounterEnd = 0;
 
     Parser parser;
-    Log log(parser.GetZ3Context(), "1.txt");
-    log.ParseLog();
+    Log *log = new JavaPlainLog(parser.GetZ3Context(), "1.txt");
+    log->ParseLog();
 
     CounterStart = PerformanceCounter();
 
-    map<string, vector<LogEntry> > mp = log.GetParsedAddresses();
+    map<string, vector<LogEntry> > mp = log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
     for (mitr = mp.begin(); mitr != mp.end(); mitr++)
     {
         cout << mitr->first << endl;
         cout << "vector size is: " << mitr->second.size() << endl;
-        parser.Start(&log, mitr->first, parser.DumpValue(mitr->first));
+        parser.Start(log, mitr->first, parser.DumpValue(mitr->first));
     }
 
     CounterEnd = PerformanceCounter();

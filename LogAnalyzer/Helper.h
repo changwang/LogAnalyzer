@@ -16,13 +16,13 @@ using namespace std;
 /* macro indicates whether it is under development,
    in order to print out some information.
 */
-#define kLADebug        1
+#define kLADebug        0
 
 /*
   macro indicates it's under production environment,
   then redirects the log information to log file instead of console.
  */
-#define kLAProduction   1
+#define kLAProduction   0
 
 const int kLADupError = -1000;
 

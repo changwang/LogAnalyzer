@@ -3,6 +3,7 @@
 #include "z3.h"
 #include "Helper.h"
 #include "Log.h"
+#include "JavaPlainLog.h"
 #include "LogEntry.h"
 #include "Parser.h"
 
@@ -197,7 +198,7 @@ protected:
         _cfg = Z3_mk_config();
         Z3_set_param_value(_cfg, "MODEL", "true");
         _ctx = Z3_mk_context(_cfg);
-        _log = new Log(_ctx, "test.txt");
+        _log = new JavaPlainLog(_ctx, "test.txt");
     }
 
     virtual void TearDown()
@@ -246,7 +247,7 @@ class ParserTest : public testing::Test
 protected:
     virtual void SetUp()
     {
-        _log = new Log(_parser.GetZ3Context(), "1.txt");
+        _log = new JavaPlainLog(_parser.GetZ3Context(), "1.txt");
         _log->ParseLog();
     }
 

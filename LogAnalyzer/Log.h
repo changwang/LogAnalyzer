@@ -21,11 +21,10 @@ using namespace std;
 class Log
 {
 public:
-    //Log(Z3_context ctx, const string logname = "");
     Log();
     virtual ~Log(void) {}
     
-    void ParseLog(void);
+    virtual void ParseLog(void) = 0;
     map<string, vector<LogEntry> >& GetParsedAddresses(void) { return _addresses; }
 
     string GetLogFileName(void) const { return _logFileName; }
@@ -35,13 +34,6 @@ protected:
     Z3_context _ctx;
     string _logFileName;
     map<string, vector<LogEntry> > _addresses;
-
-    virtual vector<string> TokenizeLine(const string &line) = 0;
-    void TokenByColon(const string &token, string &ret);
-    void TokenOpAndAddr(const string &token, string &op, string &addr);
-
-    void CreateLogEntryFromTokens(const vector<string> &tokens);
-    virtual void AddLogEntryToMap(LogEntry &entry) = 0;
 };
 
 #endif
