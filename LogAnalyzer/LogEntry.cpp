@@ -41,8 +41,7 @@ void LogEntry::DeclareSymbolVarible(Z3_context ctx)
 #endif
     // make sure the symbol variable value is greater than 0
     Z3_assert_cnstr(_ctx, 
-        Z3_mk_gt(_ctx, _symVariable, 
-        Z3_mk_int(_ctx, 0, Z3_mk_int_sort(_ctx))));
+        Z3_mk_gt(_ctx, _symVariable, Z3_mk_int(_ctx, 0, Z3_mk_int_sort(_ctx))));
 }
 
 /*
@@ -77,7 +76,7 @@ const bool LogEntry::operator <(const LogEntry &other) const
 }
 
 /*
-  wheter two entries are from the same thread.
+  whether two entries are from the same thread.
  */
 bool LogEntry::FromSameThread(const LogEntry &other) const
 {

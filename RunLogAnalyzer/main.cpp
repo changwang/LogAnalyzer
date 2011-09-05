@@ -23,8 +23,8 @@ int main()
     map<string, vector<LogEntry> >::iterator mitr;
     for (mitr = mp.begin(); mitr != mp.end(); mitr++)
     {
-        cout << mitr->first << endl;
-        cout << "vector size is: " << mitr->second.size() << endl;
+        //cout << mitr->first << endl;
+        //cout << "vector size is: " << mitr->second.size() << endl;
         parser.Start(log, mitr->first, parser.DumpValue(mitr->first));
     }
 

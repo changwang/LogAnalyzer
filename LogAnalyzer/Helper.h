@@ -24,6 +24,11 @@ using namespace std;
  */
 #define kLAProduction   0
 
+/*
+  macro is used to indicate performance tuning is turn on.
+ */
+#define kLAPerformance  1
+
 const int kLADupError = -1000;
 
 /*

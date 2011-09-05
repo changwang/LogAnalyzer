@@ -1,6 +1,8 @@
 #include "JavaPlainLog.h"
 #include "Helper.h"
 
+using namespace std;
+
 const char *kJavaLogEntryTokenSeparator = " ";
 const char *kJavaLogEntryKeyValueSeparator = ":";
 
@@ -24,7 +26,7 @@ vector<string> JavaPlainLog::TokenizeLine(const string &line)
     char *c_tok = strdup(line.c_str());
     if (NULL == c_tok)
     {
-        cout << "Can't duplicate string, Exiting..." << endl;
+        EZLOGGERPRINT("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -54,7 +56,7 @@ void JavaPlainLog::TokenByColon(const string &token, string &ret)
     char *c_tok = strdup(token.c_str());
     if (NULL == c_tok)
     {
-        cout << "Can't duplicate token, Exiting..." << endl;
+        EZLOGGERPRINT("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -81,7 +83,7 @@ void JavaPlainLog::TokenOpAndAddr(const string &token, string &op, string &addr)
     char *c_tok = strdup(token.c_str());
     if (NULL == c_tok)
     {
-        cout << "Can't duplicate token, Exiting..." << endl;
+        EZLOGGERPRINT("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -171,23 +173,31 @@ void JavaPlainLog::CreateLogEntryFromTokens(const vector<string> &tokens)
  */
 void JavaPlainLog::AddLogEntryToMap(LogEntry &entry)
 {
+#if kLAPerformance
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
     map<string, vector<LogEntry> >::iterator mitr;
     // find out whether the give address is in the map.
     mitr = _addresses.find(entry.GetAddress());
 
-    vector<LogEntry> entries;
-    if (_addresses.end() != mitr)
+    if (mitr == _addresses.end())
     {
-        // if so, get the list of log entries.
-        entries = _addresses[entry.GetAddress()];
+        vector<LogEntry> entries;
+        entry.SetTotalOrderNum(1);
+        entries.push_back(entry);
+        _addresses.insert(pair<string, vector<LogEntry> >(entry.GetAddress(), entries));
+    }
+    else
+    {
+        entry.SetTotalOrderNum(_addresses[entry.GetAddress()].size()+1);
+        _addresses[entry.GetAddress()].push_back(entry);
     }
 
-    entry.SetTotalOrderNum(entries.size() + 1);
-
-    // save the log entry at the end of list
-    entries.push_back(entry);
-    // put the list back to the map
-    _addresses[entry.GetAddress()] = entries;
+#if kLAPerformance
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
 }
 
 /*
@@ -196,6 +206,10 @@ void JavaPlainLog::AddLogEntryToMap(LogEntry &entry)
  */
 void JavaPlainLog::ParseLog(void)
 {
+#if kLAPerformance
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
     string line;
     vector<string> tokens;
     ifstream _logFile;
@@ -214,7 +228,7 @@ void JavaPlainLog::ParseLog(void)
             if (line.compare("") == 0) continue;    // ignore empty line
             tokens = TokenizeLine(line);
 #if kLADebug
-            PrintVectorOfString(tokens);
+            PrintVectorOfString(tokens);            
 #endif
             CreateLogEntryFromTokens(tokens);
         }
@@ -223,4 +237,8 @@ void JavaPlainLog::ParseLog(void)
 #endif
     }
     _logFile.close();
+#if kLAPerformance
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
 }

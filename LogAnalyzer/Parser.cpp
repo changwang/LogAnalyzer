@@ -84,7 +84,7 @@ void Parser::Start(Log *log, const string &address, const string &dump)
 
     if (c != NULL)
     {
-        cout << Z3_ast_to_string(_ctx, c) << endl;
+        // cout << Z3_ast_to_string(_ctx, c) << endl;
         Z3_assert_cnstr(_ctx, c);
     }
 }
@@ -103,6 +103,11 @@ string Parser::DumpValue(const string &address)
  */
 Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
 {
+#if kLAPerformance
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
+
     Z3_ast ct_ast = NULL;
     bool first = true;
 
@@ -139,6 +144,10 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
         cout << Z3_ast_to_string(_ctx, ct_ast) << endl;
 #endif
     
+#if kLAPerformance
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return ct_ast;
 }
 
@@ -147,6 +156,10 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
  */
 Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
 {
+#if kLAPerformance
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
     Z3_ast cu_ast = NULL;
     bool first = true;
 
@@ -182,6 +195,10 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
         cout << Z3_ast_to_string(_ctx, cu_ast) << endl;
 #endif
 
+#if kLAPerformance
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return cu_ast;
 }
 
@@ -191,6 +208,10 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
  */
 Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump)
 {
+#if kLAPerformance
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
     Z3_ast cc_ast = NULL;
     bool entryfirst = true;     // first time to calculate C_i
 
@@ -324,6 +345,10 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
         cout << Z3_ast_to_string(_ctx, cc_ast) << endl;
 #endif
 
+#if kLAPerformance
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return cc_ast;
 }
 
