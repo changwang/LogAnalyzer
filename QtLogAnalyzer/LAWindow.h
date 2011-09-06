@@ -8,6 +8,7 @@
 #include <QtGui/QTableWidget>
 #include <QtGui/QProgressBar>
 #include "Log.h"
+#include "JavaPlainLog.h"
 #include "LogEntry.h"
 #include "Parser.h"
 #include "OrderUpdateThread.h"
@@ -23,7 +24,7 @@ private:
 
     QLabel *_lbl_path;
 
-    QListWidget *_lst_address;
+    QTableWidget *_tbl_address;
     QTableWidget *_tbl_orders;
 
     QProgressBar *_prg_bar;
@@ -42,7 +43,7 @@ public slots:
 
     void OnChooseLogFile(void);
     void OnParse(void);
-    void OnStart(void);
+    void OnStart(QTableWidgetItem *item);
     void OnUpdateOrders(void);
 
 };

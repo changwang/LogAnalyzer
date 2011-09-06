@@ -16,12 +16,12 @@ using namespace std;
 /* macro indicates whether it is under development,
    in order to print out some information.
 */
-#define kLADebug        1
+#define kLADebug        0
 
 /*
   macro is used to indicate performance tuning is turn on.
  */
-#define kLAPerformance  1
+#define kLAPerformance  0
 
 const int kLADupError = -1000;
 

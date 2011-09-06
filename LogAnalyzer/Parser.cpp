@@ -477,6 +477,7 @@ Z3_model Parser::GetResult(void)
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
+
     Z3_check_and_get_model(_ctx, &_model);
 
     if (NULL != _model) // set the symbolic values here, because the model has been solved.
@@ -486,9 +487,13 @@ Z3_model Parser::GetResult(void)
         vector<LogEntry> entries = _log->GetParsedAddresses()[_address];
         for (unsigned i = 0; i < num; i++)
         {
-            Z3_func_decl fd = Z3_get_model_constant(_ctx, _model, i);
-            Z3_eval_func_decl(_ctx, _model, fd, &odr);
-            entries[i].SetSymbolValue(atoi(Z3_ast_to_string(_ctx, odr)));
+            Z3_ast out;
+            if (!Z3_eval(_ctx, _model, entries[i].GetSymbolVarible(_ctx), &out))
+            {
+                EZLOGGER("Failed to evaluate symbolic value");
+                exit(-1);
+            }
+            entries[i].SetSymbolValue(atoi(Z3_ast_to_string(_ctx, out)));
         }
         _log->GetParsedAddresses()[_address] = entries;
     }

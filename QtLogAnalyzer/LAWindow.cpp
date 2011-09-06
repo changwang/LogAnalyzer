@@ -8,6 +8,11 @@
 #include "LAWindow.h"
 
 enum {
+    AddressColumnAddr,
+    AddressColumnHits
+} AddressColumn;
+
+enum {
     ResultColumnOrder,      // index of order column
     ResultColumnLogEntry    // index of log entry column
 } ResultColumn;
@@ -56,9 +61,17 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     hboxLayout->setSpacing(5);
     hboxLayout->setContentsMargins(5, 5, 5, 5);
 
-    _lst_address = new QListWidget(grp_result);
-    connect(_lst_address, SIGNAL(itemDoubleClicked(QListWidgetItem*)),
-            this, SLOT(OnStart(void)));
+    _tbl_address = new QTableWidget(grp_result);
+    _tbl_address->setColumnCount(2);
+    _tbl_address->verticalHeader()->hide();
+    _tbl_address->setColumnWidth(0, 200);
+    _tbl_address->setColumnWidth(1, 50);
+    QStringList addressHeaders;
+    addressHeaders << "Address" << "Hits";
+    _tbl_address->setHorizontalHeaderLabels(addressHeaders);
+    _tbl_address->setAlternatingRowColors(true);
+    connect(_tbl_address, SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
+            this, SLOT(OnStart(QTableWidgetItem *)));
 
     _btn_start = new QPushButton(grp_result);
     _btn_start->setText(">");
@@ -74,7 +87,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     _tbl_orders->setHorizontalHeaderLabels(headers);
     _tbl_orders->setAlternatingRowColors(true);
 
-    hboxLayout->addWidget(_lst_address);
+    hboxLayout->addWidget(_tbl_address);
     hboxLayout->addWidget(_btn_start);
     hboxLayout->addWidget(_tbl_orders);
     hboxLayout->setStretch(2, 1);
@@ -86,7 +99,7 @@ LAWindow::LAWindow(QWidget *parent, Qt::WFlags flags)
     setWindowTitle("Log Analzyer");
     resize(800, 600);
 
-    _log = new Log(_parser.GetZ3Context());
+    _log = new JavaPlainLog(_parser.GetZ3Context());
     
     connect(&_outhread, SIGNAL(OnFinishedSorting(void)), 
             this, SLOT(OnUpdateOrders(void)));
@@ -112,31 +125,43 @@ void LAWindow::OnParse(void)
     _log->SetLogFileName(_filePath.toStdString());
     _log->ParseLog();
 
-    _lst_address->clear();
-
     map<string, vector<LogEntry> > mp = _log->GetParsedAddresses();
     map<string, vector<LogEntry> >::const_iterator itr;
+
+    _tbl_address->setRowCount(mp.size());
+
+    int i = 0;
     for (itr = mp.begin(); itr != mp.end(); itr++)
     {
-        _lst_address->addItem(QString::fromStdString(itr->first));
+        QTableWidgetItem *column1Item = new QTableWidgetItem();
+        column1Item->setText(QString::fromStdString(itr->first));
+        column1Item->setFlags(column1Item->flags() & (~Qt::ItemIsEditable));
+        column1Item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        _tbl_address->setItem(i, AddressColumnAddr, column1Item);
+
+        QTableWidgetItem *column2Item = new QTableWidgetItem();
+        column2Item->setText(QString::number((itr->second).size()));
+        column2Item->setFlags(column1Item->flags() & (~Qt::ItemIsEditable));
+        column2Item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        _tbl_address->setItem(i, AddressColumnHits, column2Item);
+        i++;
     }
 }
 
 /*
   when item in the list is double clicked, or ">" button is clicked.
  */
-void LAWindow::OnStart(void)
+void LAWindow::OnStart(QTableWidgetItem *item)
 {
-    QList<QListWidgetItem *> items = _lst_address->selectedItems();
-    if (items.empty()) return;
-    QListWidgetItem *item = items.first();  // only consider one item is chosen
-
+    if (!item) return;
     _tbl_orders->clearContents();
-    _parser.Start(_log, item->text().toStdString(), "2");
+    QString addr = _tbl_address->item(item->row(), AddressColumnAddr)->text();
+    _parser.Start(_log, addr.toStdString(), "2");
+
     if (_parser.GetResult() != NULL)
     {
         _prg_bar->setVisible(true);
-        vector<LogEntry> entries = _log->GetParsedAddresses()[item->text().toStdString()];
+        vector<LogEntry> entries = _log->GetParsedAddresses()[addr.toStdString()];
         if (entries.empty()) return;
         _tbl_orders->setRowCount(entries.size());
         _outhread.Sort(entries);
