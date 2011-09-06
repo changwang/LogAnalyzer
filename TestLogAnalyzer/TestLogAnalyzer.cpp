@@ -146,7 +146,6 @@ TEST_F(LogEntryTest, DeclareSymbolVar)
     string strSymVar(kLAZ3VarPrefix);
     _entry->SetTotalOrderNum(1);
     strSymVar.append(IntToString(_entry->GetThreadId()) + "_" + IntToString(_entry->GetTotalOrderNum()));
-
     EXPECT_EQ(0, strcmp(strSymVar.c_str(), Z3_ast_to_string(_ctx, _entry->GetSymbolVarible(_ctx))));
 
     strSymVar = string(kLAZ3VarPrefix);

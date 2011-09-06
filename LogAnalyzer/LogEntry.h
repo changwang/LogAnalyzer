@@ -39,7 +39,7 @@ public:
     void SetNewValue(string newValue) { this->_newValue = newValue; }
     string GetNewValue(void) const { return _newValue; }
 
-    void SetTotalOrderNum(unsigned num) { this->_totalOrderNum = num; }
+    void SetTotalOrderNum(unsigned num);
     unsigned GetTotalOrderNum(void) const { return _totalOrderNum; }
 
     void SetSymbolValue(unsigned symValue) { this->_symValue = symValue; }

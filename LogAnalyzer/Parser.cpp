@@ -107,37 +107,37 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
     Z3_ast ct_ast = NULL;
     bool first = true;
 
-    Z3_ast left, right, constr;
-    vector<LogEntry>::iterator leftitr;
-    vector<LogEntry>::iterator rightitr;
+    Z3_ast left, right, lessThanCstr;
+    vector<LogEntry>::iterator leftEntriesItr;
+    vector<LogEntry>::iterator rightEntriesItr;
 
-    for (leftitr = entries.begin(); leftitr != entries.end(); leftitr++)
+    for (leftEntriesItr = entries.begin(); leftEntriesItr != entries.end(); leftEntriesItr++)
     {
-        left = leftitr->GetSymbolVarible(_ctx);
-        for (rightitr = leftitr; rightitr != entries.end(); rightitr++)
+        left = leftEntriesItr->GetSymbolVarible(_ctx);
+        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries.end(); rightEntriesItr++)
         {
             // if M_i and M_j are in the same thread, and M_i < M_j
-            if (rightitr->FromSameThread(*leftitr) &&
-                rightitr->GetTotalOrderNum() != leftitr->GetTotalOrderNum())
+            if (rightEntriesItr->FromSameThread(*leftEntriesItr) &&
+                rightEntriesItr->GetTotalOrderNum() != leftEntriesItr->GetTotalOrderNum())
             {
-                right = rightitr->GetSymbolVarible(_ctx);
-                constr = Z3_mk_lt(_ctx, left, right);
+                right = rightEntriesItr->GetSymbolVarible(_ctx);
+                lessThanCstr = Z3_mk_lt(_ctx, left, right);
                 if (first)
                 {
-                    ct_ast = constr;
+                    ct_ast = lessThanCstr;
                     first = false;
                 }
                 else
                 {
-                    Z3_ast args[] = { ct_ast, constr };
+                    Z3_ast args[] = { ct_ast, lessThanCstr };
                     ct_ast = Z3_mk_and(_ctx, 2, args);
                 }
             }
         }
     }
 
-    if (ct_ast != NULL)
 #if kLADebug
+    if (ct_ast != NULL)
         EZLOGGER(Z3_ast_to_string(_ctx, ct_ast));
 #endif
     
@@ -157,36 +157,38 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
+
     Z3_ast cu_ast = NULL;
     bool first = true;
 
-    Z3_ast left, right, constr;
-    vector<LogEntry>::iterator leftitr;
-    vector<LogEntry>::iterator rightitr;
+    Z3_ast left, right, notEqualCstr;
+    vector<LogEntry>::iterator leftEntriesItr;
+    vector<LogEntry>::iterator rightEntriesItr;
 
-    for (leftitr = entries.begin(); leftitr != entries.end(); leftitr++)
+    for (leftEntriesItr = entries.begin(); leftEntriesItr != entries.end(); leftEntriesItr++)
     {
-        left = leftitr->GetSymbolVarible(_ctx);
-        for (rightitr = leftitr; rightitr != entries.end(); rightitr++)
+        left = leftEntriesItr->GetSymbolVarible(_ctx);
+        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries.end(); rightEntriesItr++)
         {
             // if M_i and M_j are not in the same thread, then M_i != M_j
-            if (!rightitr->FromSameThread(*leftitr))
+            if (!rightEntriesItr->FromSameThread(*leftEntriesItr))
             {
-                right = rightitr->GetSymbolVarible(_ctx);
-                constr = Z3_mk_not(_ctx, Z3_mk_eq(_ctx, left, right));
+                right = rightEntriesItr->GetSymbolVarible(_ctx);
+                notEqualCstr = Z3_mk_not(_ctx, Z3_mk_eq(_ctx, left, right));
                 if (first)
                 {
-                    cu_ast = constr;
+                    cu_ast = notEqualCstr;
                     first = false;
                 }
                 else
                 {
-                    Z3_ast args[] = { cu_ast, constr };
+                    Z3_ast args[] = { cu_ast, notEqualCstr };
                     cu_ast = Z3_mk_and(_ctx, 2, args);
                 }
             }
         }
     }
+
 #if kLADebug
     if (cu_ast != NULL)
         EZLOGGER(Z3_ast_to_string(_ctx, cu_ast));
@@ -209,6 +211,7 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
+
     Z3_ast cc_ast = NULL;
     bool entryfirst = true;     // first time to calculate C_i
 
@@ -354,38 +357,42 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
  */
 vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const vector<LogEntry> &entries)
 {
+#if kLAPerformance && kLADebug
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
+
     vector<LogEntry> pfs;
     vector<LogEntry>::const_iterator itr;
-    bool firstSucc = false;     // firstSucc means find the first successor
-    bool findFlag = false;      // findFlag means find the given entry from the argument entries
-    LogEntry succ(0);   // first successor
- 
+    bool findSelf = false;      // findFlag means find the given entry from the argument entries
+    
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
-        if (!firstSucc && (itr->FromSameThread(entry)))    // in the same thread, try to find first successor
-        {
-            if (findFlag && !firstSucc)
-            {
-                firstSucc = true;
-                succ = *itr;
-            }
-            
-            if (*itr == entry)
-            {
-                findFlag = true;
-            }
-        }
-        else if (!itr->FromSameThread(entry))
+        if (!itr->FromSameThread(entry))    // if not from the same thread, put it into set
         {
             pfs.push_back(*itr);
+            continue;
+        }
+
+        if (*itr == entry)
+        {
+            findSelf = true;
+            continue;
+        }
+
+        if (findSelf && itr->FromSameThread(entry) 
+            && itr->GetTotalOrderNum() > entry.GetTotalOrderNum())
+        {
+            pfs.push_back(*itr);
+            findSelf = false;
+            continue;
         }
     }
-
-    if (succ.GetTotalOrderNum() != 0)
-    {
-        pfs.push_back(succ);
-    }
-
+    
+#if kLAPerformance && kLADebug
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return pfs;
 }
 
@@ -394,18 +401,27 @@ vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const v
  */
 vector<LogEntry> Parser::CreateCoherenceFollowers(const LogEntry &entry, const vector<LogEntry> &pfs)
 {
-    vector<LogEntry> cfs;
-    vector<LogEntry>::const_iterator pfsitr;
+#if kLAPerformance && kLADebug
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
 
-    for (pfsitr = pfs.begin(); pfsitr != pfs.end(); pfsitr++)
+    vector<LogEntry> cfs;
+    vector<LogEntry>::const_iterator pfsItr;
+
+    for (pfsItr = pfs.begin(); pfsItr != pfs.end(); pfsItr++)
     {
         // if M_i.newValue == M_j.oldValue
-        if (pfsitr->GetOldValue().compare(entry.GetNewValue()) == 0)
+        if (pfsItr->GetOldValue().compare(entry.GetNewValue()) == 0)
         {
-            cfs.push_back(*pfsitr);
+            cfs.push_back(*pfsItr);
         }
     }
 
+#if kLAPerformance && kLADebug
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return cfs;
 }
 
@@ -414,19 +430,24 @@ vector<LogEntry> Parser::CreateCoherenceFollowers(const LogEntry &entry, const v
  */
 vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
 {
+#if kLAPerformance && kLADebug
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
+
     vector<LogEntry> last;
-    vector<LogEntry>::iterator insertitr;
+    vector<LogEntry>::iterator insertItr;
 
     bool flag = false;
 
     vector<LogEntry>::const_iterator itr;
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
-        for (insertitr = last.begin(); insertitr != last.end(); insertitr++)
+        for (insertItr = last.begin(); insertItr != last.end(); insertItr++)
         {
-            if (itr->FromSameThread(*insertitr))
+            if (itr->FromSameThread(*insertItr))
             {
-                *insertitr = *itr;
+                *insertItr = *itr;
                 flag = true;
                 break;
             }
@@ -440,6 +461,10 @@ vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
         }
     }
 
+#if kLAPerformance && kLADebug
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return last;
 }
 

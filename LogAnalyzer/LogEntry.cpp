@@ -84,6 +84,17 @@ bool LogEntry::FromSameThread(const LogEntry &other) const
 }
 
 /*
+  once total order number is changed,
+  symbol variable should be updated as well.
+ */
+void LogEntry::SetTotalOrderNum(unsigned num)
+{
+    this->_totalOrderNum = num;
+    if (this->_ctx)
+        this->DeclareSymbolVarible(this->_ctx);
+}
+
+/*
   displays log entry with a readable style.
  */
 string LogEntry::ToString(void) const
