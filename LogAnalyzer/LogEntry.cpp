@@ -51,7 +51,7 @@ void LogEntry::DeclareSymbolVarible(Z3_context ctx)
  */
 Z3_ast LogEntry::GetSymbolVarible(Z3_context ctx)
 {
-    if (ctx != NULL)
+    if (ctx != NULL && ctx != this->_ctx)
     {
         DeclareSymbolVarible(ctx);
     }
