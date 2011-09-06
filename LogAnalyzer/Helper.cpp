@@ -9,7 +9,9 @@ void PrintVectorOfString(const vector<string> &strs)
 
     for (itr = strs.begin(); itr != strs.end(); itr++)
     {
-        cout << *itr << endl;
+#if kLADebug
+        EZLOGGER(*itr);
+#endif
     }
 }
 
@@ -21,8 +23,10 @@ void PrintVectorOfLogEntry(const vector<LogEntry> &entries)
     vector<LogEntry>::const_iterator itr;
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
-        cout << "\t";
+#if kLADebug
+        EZLOGGER("\t");
         PrintLogEntry(*itr);
+#endif
     }
 }
 
@@ -34,9 +38,10 @@ void PrintMap(const map<string, vector<LogEntry> > &mp)
     map<string, vector<LogEntry> >::const_iterator mitr;
     for (mitr = mp.begin(); mitr != mp.end(); mitr++)
     {
-        cout << "At address " << mitr->first << endl;
+#if kLADebug
+        EZLOGGERPRINT("At address %s", mitr->first);
         PrintVectorOfLogEntry(mitr->second);
-        cout << endl;
+#endif
     }
 }
 
@@ -45,7 +50,9 @@ void PrintMap(const map<string, vector<LogEntry> > &mp)
  */
 void PrintLogEntry(const LogEntry &entry)
 {
-    cout << entry.ToString() << endl;
+#if kLADebug
+    EZLOGGER(entry.ToString());
+#endif
 }
 
 /*
@@ -82,6 +89,7 @@ OperationType StringToOpType(const string &strOp)
     }
     else
     {
+        EZLOGGER("Unable to interpret operation type!", strOp);
         return OperationUndefined;
     }
 }
@@ -102,6 +110,7 @@ string OpTypeToString(OperationType op)
     case OperationRelease:
         return "release_lock";
     default:
+        EZLOGGER("Unable to translate operation type!", op);
         return "undefined";
     }
 }

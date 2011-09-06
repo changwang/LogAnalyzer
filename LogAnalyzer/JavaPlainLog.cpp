@@ -26,7 +26,7 @@ vector<string> JavaPlainLog::TokenizeLine(const string &line)
     char *c_tok = strdup(line.c_str());
     if (NULL == c_tok)
     {
-        EZLOGGERPRINT("Can't duplicate string, Exiting...");
+        EZLOGGER("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -56,7 +56,7 @@ void JavaPlainLog::TokenByColon(const string &token, string &ret)
     char *c_tok = strdup(token.c_str());
     if (NULL == c_tok)
     {
-        EZLOGGERPRINT("Can't duplicate string, Exiting...");
+        EZLOGGER("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -83,7 +83,7 @@ void JavaPlainLog::TokenOpAndAddr(const string &token, string &op, string &addr)
     char *c_tok = strdup(token.c_str());
     if (NULL == c_tok)
     {
-        EZLOGGERPRINT("Can't duplicate string, Exiting...");
+        EZLOGGER("Can't duplicate string, Exiting...");
         exit(kLADupError);
     }
 
@@ -173,7 +173,7 @@ void JavaPlainLog::CreateLogEntryFromTokens(const vector<string> &tokens)
  */
 void JavaPlainLog::AddLogEntryToMap(LogEntry &entry)
 {
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
@@ -194,7 +194,7 @@ void JavaPlainLog::AddLogEntryToMap(LogEntry &entry)
         _addresses[entry.GetAddress()].push_back(entry);
     }
 
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     pEnd = PerformanceCounter();
     EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
 #endif
@@ -206,7 +206,7 @@ void JavaPlainLog::AddLogEntryToMap(LogEntry &entry)
  */
 void JavaPlainLog::ParseLog(void)
 {
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
@@ -237,7 +237,7 @@ void JavaPlainLog::ParseLog(void)
 #endif
     }
     _logFile.close();
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     pEnd = PerformanceCounter();
     EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
 #endif

@@ -1,6 +1,10 @@
 #include "z3.h"
 #include "log.h"
 
+/*
+  JavaPlainLog is a subclass of Log, which has following format:
+  threadId:id read_var:op oldVarValue:old newVarValue:new
+ */
 class JavaPlainLog : public Log
 {
 public:

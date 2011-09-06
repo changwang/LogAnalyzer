@@ -23,13 +23,11 @@ int main()
     map<string, vector<LogEntry> >::iterator mitr;
     for (mitr = mp.begin(); mitr != mp.end(); mitr++)
     {
-        //cout << mitr->first << endl;
-        //cout << "vector size is: " << mitr->second.size() << endl;
         parser.Start(log, mitr->first, parser.DumpValue(mitr->first));
     }
 
     CounterEnd = PerformanceCounter();
-    cout << "Time elapsed: " << double(CounterEnd-CounterStart)/PCPerformanceFreq() << " ms" << endl;
-    cout << Z3_model_to_string(parser.GetZ3Context(), parser.GetResult());
+    EZLOGGERPRINT("Time elapsed: %g ms.", (CounterEnd-CounterStart)/PCPerformanceFreq());
+    EZLOGGER(Z3_model_to_string(parser.GetZ3Context(), parser.GetResult()));
     return 0;
 }

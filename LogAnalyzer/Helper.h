@@ -16,13 +16,7 @@ using namespace std;
 /* macro indicates whether it is under development,
    in order to print out some information.
 */
-#define kLADebug        0
-
-/*
-  macro indicates it's under production environment,
-  then redirects the log information to log file instead of console.
- */
-#define kLAProduction   0
+#define kLADebug        1
 
 /*
   macro is used to indicate performance tuning is turn on.
@@ -62,6 +56,7 @@ OperationType StringToOpType(const string &strOp);
 
 string OpTypeToString(OperationType op);
 
+#ifdef _WIN32
 /*
   get the PC CPU frequency.
  */
@@ -69,7 +64,7 @@ inline double PCPerformanceFreq()
 {
     LARGE_INTEGER li;
     if (!QueryPerformanceFrequency(&li))
-        cout << "Failed!";
+        EZLOGGER("Failed to get performance frequency!");
     return double(li.QuadPart) / 1000.0;
 }
 
@@ -79,8 +74,10 @@ inline double PCPerformanceFreq()
 inline __int64 PerformanceCounter()
 {
     LARGE_INTEGER li;
-    QueryPerformanceCounter(&li);
+    if (!QueryPerformanceCounter(&li))
+        EZLOGGER("Failed to get performance counter");
     return li.QuadPart;
 }
+#endif
 
 #endif

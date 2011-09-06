@@ -103,7 +103,7 @@ string Parser::DumpValue(const string &address)
  */
 Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
 {
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
@@ -139,12 +139,13 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
             }
         }
     }
-#if kLADebug
+
     if (ct_ast != NULL)
-        cout << Z3_ast_to_string(_ctx, ct_ast) << endl;
+#if kLADebug
+        EZLOGGER(Z3_ast_to_string(_ctx, ct_ast));
 #endif
     
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     pEnd = PerformanceCounter();
     EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
 #endif
@@ -156,7 +157,7 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
  */
 Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
 {
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
@@ -192,10 +193,10 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
     }
 #if kLADebug
     if (cu_ast != NULL)
-        cout << Z3_ast_to_string(_ctx, cu_ast) << endl;
+        EZLOGGER(Z3_ast_to_string(_ctx, cu_ast));
 #endif
 
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     pEnd = PerformanceCounter();
     EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
 #endif
@@ -208,7 +209,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
  */
 Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump)
 {
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
@@ -342,10 +343,10 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
     }
 #if kLADebug
     if (cc_ast != NULL)
-        cout << Z3_ast_to_string(_ctx, cc_ast) << endl;
+        EZLOGGER(Z3_ast_to_string(_ctx, cc_ast));
 #endif
 
-#if kLAPerformance
+#if kLAPerformance && kLADebug
     pEnd = PerformanceCounter();
     EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
 #endif
@@ -451,6 +452,10 @@ vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
  */
 Z3_model Parser::GetResult(void)
 {
+#if kLAPerformance && kLADebug
+    __int64 pStart = 0, pEnd = 0;
+    pStart = PerformanceCounter();
+#endif
     Z3_check_and_get_model(_ctx, &_model);
 
     if (NULL != _model) // set the symbolic values here, because the model has been solved.
@@ -467,5 +472,9 @@ Z3_model Parser::GetResult(void)
         _log->GetParsedAddresses()[_address] = entries;
     }
 
+#if kLAPerformance && kLADebug
+    pEnd = PerformanceCounter();
+    EZLOGGERPRINT("Takes %g ms.", (pEnd-pStart)/PCPerformanceFreq());
+#endif
     return _model;
 }

@@ -25,7 +25,7 @@ LogEntry::LogEntry(unsigned tid)
  */
 void LogEntry::DeclareSymbolVarible(Z3_context ctx)
 {
-#if kLAProduction
+#if kLADebug
     if (ctx == NULL) EZLOGGER("Z3 context cannot be NULL!");
 #endif
     assert(ctx != NULL); // make sure context is not NULL
@@ -37,7 +37,7 @@ void LogEntry::DeclareSymbolVarible(Z3_context ctx)
     _symVariable = Z3_mk_const(_ctx, s, Z3_mk_int_sort(_ctx));
 
 #if kLADebug
-    cout << Z3_ast_to_string(_ctx, _symVariable) << endl;
+    EZLOGGER(Z3_ast_to_string(_ctx, _symVariable));
 #endif
     // make sure the symbol variable value is greater than 0
     Z3_assert_cnstr(_ctx, 
