@@ -63,10 +63,7 @@ void Parser::Start(Log *log, const string &address, const string &dump)
             Z3_ast args[] = { c, cu };
             c = Z3_mk_and(_ctx, 2, args);
         }
-        else
-        {
-            c = cu;
-        }
+        else c = cu;
     }
 
     if (cc != NULL)
@@ -76,15 +73,14 @@ void Parser::Start(Log *log, const string &address, const string &dump)
             Z3_ast args[] = { c, cc };
             c = Z3_mk_and(_ctx, 2, args);
         }
-        else
-        {
-            c = cc;
-        }
+        else c = cc;
     }
 
     if (c != NULL)
     {
-        // cout << Z3_ast_to_string(_ctx, c) << endl;
+#if kLADebug
+        EZLOGGER(Z3_ast_to_string(_ctx, c));
+#endif
         Z3_assert_cnstr(_ctx, c);
     }
 }
