@@ -68,22 +68,23 @@ string IntToString(int i)
 
 /*
   helper method, convert string to OperationType
+  it seems like there are different ways to depict operations.
  */
 OperationType StringToOpType(const string &strOp)
 {
-    if (strOp == "read_var")
+    if (strOp == "read_var" || strOp == "read")
     {
         return OperationRead;
     }
-    else if (strOp == "write_var")
+    else if (strOp == "write_var" || strOp == "write")
     {
         return OperationWrite;
     }
-    else if (strOp == "acquire_lock")
+    else if (strOp == "acquire_lock" || strOp == "acquire" || strOp == "acquire_var")
     {
         return OperationAcquire;
     }
-    else if (strOp == "release_lock")
+    else if (strOp == "release_lock" || strOp == "release" || strOp == "release_var")
     {
         return OperationRelease;
     }
