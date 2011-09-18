@@ -31,30 +31,30 @@ TEST(IntToStringTest, PositiveInput)
 TEST(StringToOpTypeTest, ReadOperation)
 {
     EXPECT_EQ(OperationRead, StringToOpType("read_var"));
-    EXPECT_NE(OperationRead, StringToOpType("read"));
+    EXPECT_EQ(OperationRead, StringToOpType("read"));
     EXPECT_NE(OperationUndefined, StringToOpType("read_var"));
 }
 
 TEST(StringToOpTypeTest, WriteOperation)
 {
     EXPECT_EQ(OperationWrite, StringToOpType("write_var"));
-    EXPECT_NE(OperationWrite, StringToOpType("write"));
+    EXPECT_EQ(OperationWrite, StringToOpType("write"));
     EXPECT_NE(OperationUndefined, StringToOpType("write_var"));
 }
 
 TEST(StringToOpTypeTest, AcquireOperation)
 {
     EXPECT_EQ(OperationAcquire, StringToOpType("acquire_lock"));
-    EXPECT_NE(OperationAcquire, StringToOpType("acquire_var"));
-    EXPECT_NE(OperationAcquire, StringToOpType("acquire"));
+    EXPECT_EQ(OperationAcquire, StringToOpType("acquire_var"));
+    EXPECT_EQ(OperationAcquire, StringToOpType("acquire"));
     EXPECT_NE(OperationUndefined, StringToOpType("acquire_lock"));
 }
 
 TEST(StringToOpTypeTest, ReleaseOperation)
 {
     EXPECT_EQ(OperationRelease, StringToOpType("release_lock"));
-    EXPECT_NE(OperationRelease, StringToOpType("release_var"));
-    EXPECT_NE(OperationRelease, StringToOpType("release"));
+    EXPECT_EQ(OperationRelease, StringToOpType("release_var"));
+    EXPECT_EQ(OperationRelease, StringToOpType("release"));
     EXPECT_NE(OperationUndefined, StringToOpType("release_lock"));
 }
 
