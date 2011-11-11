@@ -16,7 +16,7 @@ using namespace std;
 /* macro indicates whether it is under development,
    in order to print out some information.
 */
-#define kLADebug        0
+#define kLADebug        1
 
 /*
   macro is used to indicate performance tuning is turn on.

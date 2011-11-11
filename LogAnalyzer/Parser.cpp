@@ -2,6 +2,8 @@
 #include "Parser.h"
 #include "Helper.h"
 
+static int AstCount = 0;
+
 Parser::Parser(void)
 {
     _cfg = Z3_mk_config();
@@ -76,6 +78,8 @@ void Parser::Start(Log *log, const string &address, const string &dump)
         else c = cc;
     }
 
+    cout << "There are " << AstCount << " nodes in the context!" << endl;
+
     if (c != NULL)
     {
 #if kLADebug
@@ -122,6 +126,7 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
             {
                 right = rightEntriesItr->GetSymbolVarible(_ctx);
                 lessThanCstr = Z3_mk_lt(_ctx, left, right);
+                AstCount++;
                 if (first)
                 {
                     ct_ast = lessThanCstr;
@@ -175,6 +180,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
             {
                 right = rightEntriesItr->GetSymbolVarible(_ctx);
                 notEqualCstr = Z3_mk_not(_ctx, Z3_mk_eq(_ctx, left, right));
+                AstCount++;
                 if (first)
                 {
                     cu_ast = notEqualCstr;
@@ -234,7 +240,8 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
             cfs.pop_back();
             Z3_ast cf_constr = Z3_mk_lt(_ctx, ent.GetSymbolVarible(_ctx), 
                                               cfle.GetSymbolVarible(_ctx)); // M_i < M_j
-            
+            AstCount++;
+
             vector<LogEntry> tmppfs = pfs;  // get a copy, because later using pop_back will destroy PFS
             Z3_ast pf_constrs = NULL;       // constraint for M_k in PFS
             bool pffirst = true;            // first time to calculate M_k
@@ -245,14 +252,38 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                 // M_j != M_k
                 if (cfle.GetTotalOrderNum() != pfle.GetTotalOrderNum())
                 {
-                    // M_k < M_i
-                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), 
-                                                 ent.GetSymbolVarible(_ctx));
-                    // M_j < M_k
-                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), 
-                                                 pfle.GetSymbolVarible(_ctx));
-                    Z3_ast args[] = { arg1, arg2 };
-                    Z3_ast pf_constr = Z3_mk_or(_ctx, 2, args); // (M_k < M_i) U (M_j < M_k)
+                    Z3_ast arg1 = NULL, arg2 = NULL;   
+                    if (!pfle.FromSameThread(ent))
+                    {
+                        // M_k < M_i
+                        arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), 
+                            ent.GetSymbolVarible(_ctx));
+                        AstCount++;
+                    }
+
+                    if (!pfle.FromSameThread(cfle))
+                    {
+                        // M_j < M_k
+                        arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), 
+                            pfle.GetSymbolVarible(_ctx));
+                        AstCount++;
+                    }
+                    
+                    Z3_ast pf_constr = NULL;
+                    if (arg1 && arg2)
+                    {
+                        Z3_ast args[] = { arg1, arg2 };
+                        pf_constr = Z3_mk_or(_ctx, 2, args); // (M_k < M_i) U (M_j < M_k)
+                    }
+                    else if (arg1 && !arg2)
+                    {
+                        pf_constr = arg1;
+                    }
+                    else
+                    {
+                        pf_constr = arg2;
+                    }
+                    
                     if (pffirst)
                     {
                         pf_constrs = pf_constr;
@@ -298,6 +329,7 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                 {
                     Z3_ast lstcnt = Z3_mk_lt(_ctx, lstle.GetSymbolVarible(_ctx), 
                                                    ent.GetSymbolVarible(_ctx));
+                    AstCount++;
                     if (lstfirst)
                     {
                         // M_k < M_i

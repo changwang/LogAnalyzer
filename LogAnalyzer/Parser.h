@@ -40,7 +40,6 @@ private:
     vector<LogEntry> CreatePotentialFollowers(const LogEntry &entry, const vector<LogEntry> &entries);
     vector<LogEntry> CreateCoherenceFollowers(const LogEntry &entry, const vector<LogEntry> &pfs);
     vector<LogEntry> CreateLastSet(const vector<LogEntry> &entries);
-
 };
 
 #endif
