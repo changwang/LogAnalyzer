@@ -249,10 +249,13 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
             {
                 LogEntry pfle = tmppfs.back();  // retrieve M_k from PFS
                 tmppfs.pop_back();
+
                 // M_j != M_k
                 if (cfle.GetTotalOrderNum() != pfle.GetTotalOrderNum())
                 {
                     Z3_ast arg1 = NULL, arg2 = NULL;   
+                    Z3_ast pf_constr = NULL;
+
                     if (!pfle.FromSameThread(ent))
                     {
                         // M_k < M_i
@@ -269,7 +272,6 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                         AstCount++;
                     }
                     
-                    Z3_ast pf_constr = NULL;
                     if (arg1 && arg2)
                     {
                         Z3_ast args[] = { arg1, arg2 };
@@ -284,20 +286,23 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
                         pf_constr = arg2;
                     }
                     
-                    if (pffirst)
+                    if (pffirst && pf_constr)
                     {
                         pf_constrs = pf_constr;
                         pffirst = false;
                     }
                     else
                     {
-                        Z3_ast pf_ands[] = { pf_constrs, pf_constr };
-                        pf_constrs = Z3_mk_and(_ctx, 2, pf_ands);
+                        if (pf_constr)
+                        {
+                            Z3_ast pf_ands[] = { pf_constrs, pf_constr };
+                            pf_constrs = Z3_mk_and(_ctx, 2, pf_ands);
+                        }
                     }
                 }
             }
 
-            if( pf_constrs != NULL)
+            if (pf_constrs != NULL)
             {
                 Z3_ast cf_ands[] = { cf_constr, pf_constrs };
                 cf_constr = Z3_mk_and(_ctx, 2, cf_ands);
