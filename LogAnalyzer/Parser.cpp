@@ -36,6 +36,7 @@ void Parser::Start(Log *log, const string &address, const string &dump)
     if (_log->GetParsedAddresses().empty())
         return;
 
+    // TODO: use pointers to redo this part.
     map<string, vector<LogEntry> > mp = _log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
     mitr = mp.find(address);
@@ -443,6 +444,7 @@ vector<LogEntry *> Parser::CreateLastSet(vector<LogEntry> &entries)
     vector<LogEntry>::iterator itr;
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
+        // TODO: use map to replace this implementation.
         for (insertItr = last.begin(); insertItr != last.end(); insertItr++)
         {
             if (itr->FromSameThread(*(*insertItr)))
