@@ -37,9 +37,9 @@ private:
     Log *_log;
     string _address;
 
-    vector<LogEntry> CreatePotentialFollowers(const LogEntry &entry, const vector<LogEntry> &entries);
-    vector<LogEntry> CreateCoherenceFollowers(const LogEntry &entry, const vector<LogEntry> &pfs);
-    vector<LogEntry> CreateLastSet(const vector<LogEntry> &entries);
+    vector<LogEntry *> CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> &entries);
+    vector<LogEntry *> CreateCoherenceFollowers(const LogEntry &entry, vector<LogEntry *> &pfs);
+    vector<LogEntry *> CreateLastSet(vector<LogEntry> &entries);
 
 };
 
