@@ -62,7 +62,7 @@ Z3_ast LogEntry::GetSymbolVarible(Z3_context ctx)
   compares whether two entries are the same,
   according to their total order numbers.
  */
-const bool LogEntry::operator ==(const LogEntry &other) const
+const bool LogEntry::operator== (const LogEntry &other) const
 {
     return _totalOrderNum == other.GetTotalOrderNum();
 }
@@ -70,7 +70,7 @@ const bool LogEntry::operator ==(const LogEntry &other) const
 /*
   compares two entries, used by sort() in algorithms.
  */
-const bool LogEntry::operator <(const LogEntry &other) const
+const bool LogEntry::operator< (const LogEntry &other) const
 {
     return _symValue < other.GetSybmolValue();
 }

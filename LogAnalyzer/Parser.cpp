@@ -221,36 +221,36 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
 
     for (leitr = entries.begin(); leitr != entries.end(); leitr++)  // *leitr presents M_i
     {
-        LogEntry ent = *leitr;
-        pfs = CreatePotentialFollowers(ent, entries);   // potential followers
-        cfs = CreateCoherenceFollowers(ent, pfs);       // coherence followers
+        LogEntry *ent = &*leitr;
+        pfs = CreatePotentialFollowers(*ent, entries);   // potential followers
+        cfs = CreateCoherenceFollowers(*ent, pfs);       // coherence followers
         last = CreateLastSet(entries);                  // last memory accesses
 
         Z3_ast cf_constrs = NULL;       // constraint for M_j in CFS
         bool cffirst = true;            // first time to calculate M_j
         while (!cfs.empty())
         {
-            LogEntry cfle = *(cfs.back()); // retrieve M_j from CFS
+            LogEntry *cfle = cfs.back(); // retrieve M_j from CFS
             cfs.pop_back();
-            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent.GetSymbolVarible(_ctx), 
-                                              cfle.GetSymbolVarible(_ctx)); // M_i < M_j
+            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent->GetSymbolVarible(_ctx), 
+                                              cfle->GetSymbolVarible(_ctx)); // M_i < M_j
             
             vector<LogEntry *> tmppfs = pfs;  // get a copy, because later using pop_back will destroy PFS
             Z3_ast pf_constrs = NULL;       // constraint for M_k in PFS
             bool pffirst = true;            // first time to calculate M_k
             while (!tmppfs.empty())
             {
-                LogEntry pfle = *(tmppfs.back());  // retrieve M_k from PFS
+                LogEntry *pfle = tmppfs.back();  // retrieve M_k from PFS
                 tmppfs.pop_back();
                 // M_j != M_k
-                if (cfle.GetTotalOrderNum() != pfle.GetTotalOrderNum())
+                if (cfle->GetTotalOrderNum() != pfle->GetTotalOrderNum())
                 {
                     // M_k < M_i
-                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), 
-                                                 ent.GetSymbolVarible(_ctx));
+                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle->GetSymbolVarible(_ctx), 
+                                                 ent->GetSymbolVarible(_ctx));
                     // M_j < M_k
-                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), 
-                                                 pfle.GetSymbolVarible(_ctx));
+                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle->GetSymbolVarible(_ctx), 
+                                                 pfle->GetSymbolVarible(_ctx));
                     Z3_ast args[] = { arg1, arg2 };
                     Z3_ast pf_constr = Z3_mk_or(_ctx, 2, args); // (M_k < M_i) U (M_j < M_k)
                     if (pffirst)
@@ -285,8 +285,8 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
         }
 
         // whether is M_i in LAST
-        vector<LogEntry *>::iterator lstitr = find(last.begin(), last.end(), &ent);
-        if (lstitr != last.end() && ent.GetNewValue() == dump)  // ent.newValue == dump
+        vector<LogEntry *>::iterator lstitr = find(last.begin(), last.end(), ent);
+        if (lstitr != last.end() && ent->GetNewValue() == dump)  // ent.newValue == dump
         {
             bool lstfirst = true;   // first time to calculate M_i in LAST
             Z3_ast lst_ands = NULL;
@@ -294,10 +294,10 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
             {
                 LogEntry lstle = *(last.back());
                 last.pop_back();
-                if (lstle.GetTotalOrderNum() != ent.GetTotalOrderNum())
+                if (lstle.GetTotalOrderNum() != ent->GetTotalOrderNum())
                 {
                     Z3_ast lstcnt = Z3_mk_lt(_ctx, lstle.GetSymbolVarible(_ctx), 
-                                                   ent.GetSymbolVarible(_ctx));
+                                                   ent->GetSymbolVarible(_ctx));
                     if (lstfirst)
                     {
                         // M_k < M_i
@@ -383,9 +383,9 @@ vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vecto
         if (findSelf && itr->FromSameThread(entry) 
             && itr->GetTotalOrderNum() > entry.GetTotalOrderNum())
         {
+            // put the access which immediately follows entry into pfs
             pfs.push_back(&(*itr));
             findSelf = false;
-            continue;
         }
     }
     
@@ -414,7 +414,7 @@ vector<LogEntry *> Parser::CreateCoherenceFollowers(const LogEntry &entry, vecto
         // if M_i.newValue == M_j.oldValue
         if ((*pfsItr)->GetOldValue().compare(entry.GetNewValue()) == 0)
         {
-            cfs.push_back((*pfsItr));
+            cfs.push_back(*pfsItr);
         }
     }
 

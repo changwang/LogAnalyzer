@@ -47,8 +47,8 @@ public:
 
     Z3_ast GetSymbolVarible(Z3_context ctx);
 
-    const bool operator ==(const LogEntry &other) const; // whether two entries are the same
-    const bool operator <(const LogEntry &other) const;  // used by sort() method
+    const bool operator== (const LogEntry &other) const; // whether two entries are the same
+    const bool operator< (const LogEntry &other) const;  // used by sort() method
 
     bool FromSameThread(const LogEntry &other) const;
 
