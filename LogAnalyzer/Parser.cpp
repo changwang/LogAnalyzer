@@ -215,42 +215,42 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
     Z3_ast cc_ast = NULL;
     bool entryfirst = true;     // first time to calculate C_i
 
-    vector<LogEntry> pfs, cfs, last;
+    vector<LogEntry *> pfs, cfs, last;
 
     vector<LogEntry>::iterator leitr;     // entries iterator
 
     for (leitr = entries.begin(); leitr != entries.end(); leitr++)  // *leitr presents M_i
     {
-        LogEntry ent = *leitr;
-        pfs = CreatePotentialFollowers(ent, entries);   // potential followers
-        cfs = CreateCoherenceFollowers(ent, pfs);       // coherence followers
+        LogEntry *ent = &*leitr;
+        pfs = CreatePotentialFollowers(*ent, entries);   // potential followers
+        cfs = CreateCoherenceFollowers(*ent, pfs);       // coherence followers
         last = CreateLastSet(entries);                  // last memory accesses
 
         Z3_ast cf_constrs = NULL;       // constraint for M_j in CFS
         bool cffirst = true;            // first time to calculate M_j
         while (!cfs.empty())
         {
-            LogEntry cfle = cfs.back(); // retrieve M_j from CFS
+            LogEntry *cfle = cfs.back(); // retrieve M_j from CFS
             cfs.pop_back();
-            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent.GetSymbolVarible(_ctx), 
-                                              cfle.GetSymbolVarible(_ctx)); // M_i < M_j
+            Z3_ast cf_constr = Z3_mk_lt(_ctx, ent->GetSymbolVarible(_ctx), 
+                                              cfle->GetSymbolVarible(_ctx)); // M_i < M_j
             
-            vector<LogEntry> tmppfs = pfs;  // get a copy, because later using pop_back will destroy PFS
+            vector<LogEntry *> tmppfs = pfs;  // get a copy, because later using pop_back will destroy PFS
             Z3_ast pf_constrs = NULL;       // constraint for M_k in PFS
             bool pffirst = true;            // first time to calculate M_k
             while (!tmppfs.empty())
             {
-                LogEntry pfle = tmppfs.back();  // retrieve M_k from PFS
+                LogEntry *pfle = tmppfs.back();  // retrieve M_k from PFS
                 tmppfs.pop_back();
                 // M_j != M_k
-                if (cfle.GetTotalOrderNum() != pfle.GetTotalOrderNum())
+                if (cfle->GetTotalOrderNum() != pfle->GetTotalOrderNum())
                 {
                     // M_k < M_i
-                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle.GetSymbolVarible(_ctx), 
-                                                 ent.GetSymbolVarible(_ctx));
+                    Z3_ast arg1 = Z3_mk_lt(_ctx, pfle->GetSymbolVarible(_ctx), 
+                                                 ent->GetSymbolVarible(_ctx));
                     // M_j < M_k
-                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle.GetSymbolVarible(_ctx), 
-                                                 pfle.GetSymbolVarible(_ctx));
+                    Z3_ast arg2 = Z3_mk_lt(_ctx, cfle->GetSymbolVarible(_ctx), 
+                                                 pfle->GetSymbolVarible(_ctx));
                     Z3_ast args[] = { arg1, arg2 };
                     Z3_ast pf_constr = Z3_mk_or(_ctx, 2, args); // (M_k < M_i) U (M_j < M_k)
                     if (pffirst)
@@ -285,19 +285,19 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
         }
 
         // whether is M_i in LAST
-        vector<LogEntry>::iterator lstitr = find(last.begin(), last.end(), ent);
-        if (lstitr != last.end() && ent.GetNewValue() == dump)  // ent.newValue == dump
+        vector<LogEntry *>::iterator lstitr = find(last.begin(), last.end(), ent);
+        if (lstitr != last.end() && ent->GetNewValue() == dump)  // ent.newValue == dump
         {
             bool lstfirst = true;   // first time to calculate M_i in LAST
             Z3_ast lst_ands = NULL;
             while (!last.empty())
             {
-                LogEntry lstle = last.back();
+                LogEntry lstle = *(last.back());
                 last.pop_back();
-                if (lstle.GetTotalOrderNum() != ent.GetTotalOrderNum())
+                if (lstle.GetTotalOrderNum() != ent->GetTotalOrderNum())
                 {
                     Z3_ast lstcnt = Z3_mk_lt(_ctx, lstle.GetSymbolVarible(_ctx), 
-                                                   ent.GetSymbolVarible(_ctx));
+                                                   ent->GetSymbolVarible(_ctx));
                     if (lstfirst)
                     {
                         // M_k < M_i
@@ -355,22 +355,22 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
 /*
   creates potential followers set according to given entry.
  */
-vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const vector<LogEntry> &entries)
+vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> &entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
 
-    vector<LogEntry> pfs;
-    vector<LogEntry>::const_iterator itr;
+    vector<LogEntry *> pfs;
+    vector<LogEntry>::iterator itr;
     bool findSelf = false;      // findFlag means find the given entry from the argument entries
     
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
         if (!itr->FromSameThread(entry))    // if not from the same thread, put it into set
         {
-            pfs.push_back(*itr);
+            pfs.push_back(&(*itr));
             continue;
         }
 
@@ -383,9 +383,9 @@ vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const v
         if (findSelf && itr->FromSameThread(entry) 
             && itr->GetTotalOrderNum() > entry.GetTotalOrderNum())
         {
-            pfs.push_back(*itr);
+            // put the access which immediately follows entry into pfs
+            pfs.push_back(&(*itr));
             findSelf = false;
-            continue;
         }
     }
     
@@ -399,20 +399,20 @@ vector<LogEntry> Parser::CreatePotentialFollowers(const LogEntry &entry, const v
 /*
   creates coherence followers set according to given entry.
  */
-vector<LogEntry> Parser::CreateCoherenceFollowers(const LogEntry &entry, const vector<LogEntry> &pfs)
+vector<LogEntry *> Parser::CreateCoherenceFollowers(const LogEntry &entry, vector<LogEntry *> &pfs)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
 
-    vector<LogEntry> cfs;
-    vector<LogEntry>::const_iterator pfsItr;
+    vector<LogEntry *> cfs;
+    vector<LogEntry *>::iterator pfsItr;
 
     for (pfsItr = pfs.begin(); pfsItr != pfs.end(); pfsItr++)
     {
         // if M_i.newValue == M_j.oldValue
-        if (pfsItr->GetOldValue().compare(entry.GetNewValue()) == 0)
+        if ((*pfsItr)->GetOldValue().compare(entry.GetNewValue()) == 0)
         {
             cfs.push_back(*pfsItr);
         }
@@ -428,26 +428,26 @@ vector<LogEntry> Parser::CreateCoherenceFollowers(const LogEntry &entry, const v
 /*
   creates last set, which contains last access of each thread
  */
-vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
+vector<LogEntry *> Parser::CreateLastSet(vector<LogEntry> &entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
     pStart = PerformanceCounter();
 #endif
 
-    vector<LogEntry> last;
-    vector<LogEntry>::iterator insertItr;
+    vector<LogEntry *> last;
+    vector<LogEntry *>::iterator insertItr;
 
     bool flag = false;
 
-    vector<LogEntry>::const_iterator itr;
+    vector<LogEntry>::iterator itr;
     for (itr = entries.begin(); itr != entries.end(); itr++)
     {
         for (insertItr = last.begin(); insertItr != last.end(); insertItr++)
         {
-            if (itr->FromSameThread(*insertItr))
+            if (itr->FromSameThread(*(*insertItr)))
             {
-                *insertItr = *itr;
+                *insertItr = &(*itr);
                 flag = true;
                 break;
             }
@@ -456,7 +456,7 @@ vector<LogEntry> Parser::CreateLastSet(const vector<LogEntry> &entries)
 
         if (!flag)
         {
-            last.push_back(*itr);
+            last.push_back(&(*itr));
             flag = true;
         }
     }
