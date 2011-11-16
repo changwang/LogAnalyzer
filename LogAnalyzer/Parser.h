@@ -23,9 +23,9 @@ public:
     void Start(Log *log, const string &address, const string &dump);
     string DumpValue(const string &address);
 
-    Z3_ast CreateThreadOrderConstraint(vector<LogEntry> &entries);
-    Z3_ast CreateUniquenessConstraint(vector<LogEntry> &entries);
-    Z3_ast CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump);
+    Z3_ast CreateThreadOrderConstraint(vector<LogEntry> *entries);
+    Z3_ast CreateUniquenessConstraint(vector<LogEntry> *entries);
+    Z3_ast CreateCoherenceConstraint(vector<LogEntry> *entries, const string &dump);
 
     Z3_model GetResult(void);
 
@@ -37,9 +37,9 @@ private:
     Log *_log;
     string _address;
 
-    vector<LogEntry *> CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> &entries);
+    vector<LogEntry *> CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> *entries);
     vector<LogEntry *> CreateCoherenceFollowers(const LogEntry &entry, vector<LogEntry *> &pfs);
-    vector<LogEntry *> CreateLastSet(vector<LogEntry> &entries);
+    vector<LogEntry *> CreateLastSet(vector<LogEntry> *entries);
 
 };
 

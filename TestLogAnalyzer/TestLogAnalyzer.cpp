@@ -216,18 +216,18 @@ TEST_F(LogTest, IsInitialized)
 {
 #define kTestLogFileName    "test.txt"
     EXPECT_EQ(kTestLogFileName, _log->GetLogFileName());
-    EXPECT_EQ(0, _log->GetParsedAddresses().size());
+    EXPECT_EQ(0, _log->GetParsedAddresses()->size());
 }
 
 TEST_F(LogTest, ParseLog)
 {
     _log->ParseLog();
-    EXPECT_EQ(1, _log->GetParsedAddresses().size());
+    EXPECT_EQ(1, _log->GetParsedAddresses()->size());
 
 #define kTestEntryThreadID  7
 #define kTestLogAddress "27744459"
 
-    LogEntry entry = _log->GetParsedAddresses()[kTestLogAddress][0];
+    LogEntry entry = (*_log->GetParsedAddresses())[kTestLogAddress][0];
     EXPECT_EQ(kTestEntryThreadID, entry.GetThreadId());
     EXPECT_EQ(OperationWrite, entry.GetOpType());
     EXPECT_EQ(kTestLogAddress, entry.GetAddress());
