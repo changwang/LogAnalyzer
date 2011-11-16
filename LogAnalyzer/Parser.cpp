@@ -366,7 +366,7 @@ vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vecto
     vector<LogEntry>::iterator itr;
     bool findSelf = false;      // findFlag means find the given entry from the argument entries
     
-    for (itr = (*entries).begin(); itr != (*entries).end(); itr++)
+    for (itr = entries->begin(); itr != entries->end(); itr++)
     {
         if (!itr->FromSameThread(entry))    // if not from the same thread, put it into set
         {
