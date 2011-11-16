@@ -14,14 +14,14 @@ int main()
     __int64 CounterEnd = 0;
 
     Parser parser;
-    Log *log = new JavaPlainLog(parser.GetZ3Context(), "1.txt");
+    Log *log = new JavaPlainLog(parser.GetZ3Context(), "2.txt");
     log->ParseLog();
 
     CounterStart = PerformanceCounter();
 
-    map<string, vector<LogEntry> > mp = log->GetParsedAddresses();
+    map<string, vector<LogEntry> > *mp = log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
-    for (mitr = mp.begin(); mitr != mp.end(); mitr++)
+    for (mitr = mp->begin(); mitr != mp->end(); mitr++)
     {
         parser.Start(log, mitr->first, parser.DumpValue(mitr->first));
     }

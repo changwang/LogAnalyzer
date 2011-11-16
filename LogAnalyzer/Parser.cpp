@@ -33,17 +33,18 @@ void Parser::Start(Log *log, const string &address, const string &dump)
 
     _ctx = Z3_mk_context(_cfg);
     _log = log;
-    if (_log->GetParsedAddresses().empty())
+    if (_log->GetParsedAddresses()->empty())
         return;
 
-    map<string, vector<LogEntry> > mp = _log->GetParsedAddresses();
+    // TODO: use pointers to redo this part.
+    map<string, vector<LogEntry> > *mp = _log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
-    mitr = mp.find(address);
-    if (mitr == mp.end())
+    mitr = mp->find(address);
+    if (mitr == mp->end())
         return;
 
     _address = address;
-    vector<LogEntry> entries = mitr->second;
+    vector<LogEntry> *entries = &(mitr->second);
 
     Z3_ast c = NULL;
 
@@ -97,7 +98,7 @@ string Parser::DumpValue(const string &address)
 /*
   creates thread order constraint by given entries.
  */
-Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
+Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> *entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
@@ -111,10 +112,10 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
     vector<LogEntry>::iterator leftEntriesItr;
     vector<LogEntry>::iterator rightEntriesItr;
 
-    for (leftEntriesItr = entries.begin(); leftEntriesItr != entries.end(); leftEntriesItr++)
+    for (leftEntriesItr = entries->begin(); leftEntriesItr != entries->end(); leftEntriesItr++)
     {
         left = leftEntriesItr->GetSymbolVarible(_ctx);
-        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries.end(); rightEntriesItr++)
+        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries->end(); rightEntriesItr++)
         {
             // if M_i and M_j are in the same thread, and M_i < M_j
             if (rightEntriesItr->FromSameThread(*leftEntriesItr) &&
@@ -151,7 +152,7 @@ Z3_ast Parser::CreateThreadOrderConstraint(vector<LogEntry> &entries)
 /*
   creates uniqueness constraint by given entries.
  */
-Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
+Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> *entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
@@ -165,10 +166,10 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
     vector<LogEntry>::iterator leftEntriesItr;
     vector<LogEntry>::iterator rightEntriesItr;
 
-    for (leftEntriesItr = entries.begin(); leftEntriesItr != entries.end(); leftEntriesItr++)
+    for (leftEntriesItr = entries->begin(); leftEntriesItr != entries->end(); leftEntriesItr++)
     {
         left = leftEntriesItr->GetSymbolVarible(_ctx);
-        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries.end(); rightEntriesItr++)
+        for (rightEntriesItr = leftEntriesItr; rightEntriesItr != entries->end(); rightEntriesItr++)
         {
             // if M_i and M_j are not in the same thread, then M_i != M_j
             if (!rightEntriesItr->FromSameThread(*leftEntriesItr))
@@ -205,7 +206,7 @@ Z3_ast Parser::CreateUniquenessConstraint(vector<LogEntry> &entries)
   creates coherence constraint by given entries.
   TODO: this one definitely needs refactory.
  */
-Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string &dump)
+Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> *entries, const string &dump)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
@@ -219,9 +220,9 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
 
     vector<LogEntry>::iterator leitr;     // entries iterator
 
-    for (leitr = entries.begin(); leitr != entries.end(); leitr++)  // *leitr presents M_i
+    for (leitr = entries->begin(); leitr != entries->end(); leitr++)  // *leitr presents M_i
     {
-        LogEntry *ent = &*leitr;
+        LogEntry *ent = &(*leitr);
         pfs = CreatePotentialFollowers(*ent, entries);   // potential followers
         cfs = CreateCoherenceFollowers(*ent, pfs);       // coherence followers
         last = CreateLastSet(entries);                  // last memory accesses
@@ -355,7 +356,7 @@ Z3_ast Parser::CreateCoherenceConstraint(vector<LogEntry> &entries, const string
 /*
   creates potential followers set according to given entry.
  */
-vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> &entries)
+vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vector<LogEntry> *entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
@@ -366,7 +367,7 @@ vector<LogEntry *> Parser::CreatePotentialFollowers(const LogEntry &entry, vecto
     vector<LogEntry>::iterator itr;
     bool findSelf = false;      // findFlag means find the given entry from the argument entries
     
-    for (itr = entries.begin(); itr != entries.end(); itr++)
+    for (itr = (*entries).begin(); itr != (*entries).end(); itr++)
     {
         if (!itr->FromSameThread(entry))    // if not from the same thread, put it into set
         {
@@ -428,7 +429,7 @@ vector<LogEntry *> Parser::CreateCoherenceFollowers(const LogEntry &entry, vecto
 /*
   creates last set, which contains last access of each thread
  */
-vector<LogEntry *> Parser::CreateLastSet(vector<LogEntry> &entries)
+vector<LogEntry *> Parser::CreateLastSet(vector<LogEntry> *entries)
 {
 #if kLAPerformance && kLADebug
     __int64 pStart = 0, pEnd = 0;
@@ -436,29 +437,31 @@ vector<LogEntry *> Parser::CreateLastSet(vector<LogEntry> &entries)
 #endif
 
     vector<LogEntry *> last;
-    vector<LogEntry *>::iterator insertItr;
 
-    bool flag = false;
+    map<int, LogEntry *> lastMap;
+    map<int, LogEntry *>::iterator lastMapItr;
 
     vector<LogEntry>::iterator itr;
-    for (itr = entries.begin(); itr != entries.end(); itr++)
+    for (itr = entries->begin(); itr != entries->end(); itr++)
     {
-        for (insertItr = last.begin(); insertItr != last.end(); insertItr++)
+        // if the map has current thread
+        if (lastMap.count(itr->GetThreadId()))
         {
-            if (itr->FromSameThread(*(*insertItr)))
+            // current thread total is order less, replace it with larger one
+            if (lastMap[itr->GetThreadId()]->GetTotalOrderNum() < itr->GetTotalOrderNum())
             {
-                *insertItr = &(*itr);
-                flag = true;
-                break;
+                lastMap[itr->GetThreadId()] = &(*itr);
             }
-            flag = false;
         }
-
-        if (!flag)
+        else
         {
-            last.push_back(&(*itr));
-            flag = true;
+            lastMap[itr->GetThreadId()] = &(*itr);
         }
+    }
+
+    for (lastMapItr = lastMap.begin(); lastMapItr != lastMap.end(); lastMapItr++)
+    {
+        last.push_back(lastMapItr->second);
     }
 
 #if kLAPerformance && kLADebug
@@ -484,7 +487,7 @@ Z3_model Parser::GetResult(void)
     {
         Z3_ast odr;
         unsigned num = Z3_get_model_num_constants(_ctx, _model);
-        vector<LogEntry> entries = _log->GetParsedAddresses()[_address];
+        vector<LogEntry> entries = (*(_log->GetParsedAddresses()))[_address];
         for (unsigned i = 0; i < num; i++)
         {
             Z3_ast out;
@@ -495,7 +498,7 @@ Z3_model Parser::GetResult(void)
             }
             entries[i].SetSymbolValue(atoi(Z3_ast_to_string(_ctx, out)));
         }
-        _log->GetParsedAddresses()[_address] = entries;
+        (*(_log->GetParsedAddresses()))[_address] = entries;
     }
 
 #if kLAPerformance && kLADebug

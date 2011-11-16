@@ -31,7 +31,7 @@ public:
     // every subclass shall override this one.
     virtual void ParseLog(void) = 0;
     
-    map<string, vector<LogEntry> >& GetParsedAddresses(void) { return _addresses; }
+    map<string, vector<LogEntry> > * GetParsedAddresses(void) { return &_addresses; }
 
     string GetLogFileName(void) const { return _logFileName; }
     void SetLogFileName(string logname) { _logFileName = logname; }
