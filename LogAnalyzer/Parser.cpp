@@ -36,7 +36,6 @@ void Parser::Start(Log *log, const string &address, const string &dump)
     if (_log->GetParsedAddresses()->empty())
         return;
 
-    // TODO: use pointers to redo this part.
     map<string, vector<LogEntry> > *mp = _log->GetParsedAddresses();
     map<string, vector<LogEntry> >::iterator mitr;
     mitr = mp->find(address);

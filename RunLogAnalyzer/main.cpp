@@ -14,7 +14,7 @@ int main()
     __int64 CounterEnd = 0;
 
     Parser parser;
-    Log *log = new JavaPlainLog(parser.GetZ3Context(), "2.txt");
+    Log *log = new JavaPlainLog(parser.GetZ3Context(), "1.txt");
     log->ParseLog();
 
     CounterStart = PerformanceCounter();
